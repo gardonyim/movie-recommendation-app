@@ -5,17 +5,21 @@ import com.example.masterwork.viewer.model.RegistrationReqDTO;
 import com.example.masterwork.viewer.model.RegistrationResDTO;
 import com.example.masterwork.viewer.model.Viewer;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
 import java.util.Random;
 
 @Service
 public class ViewerServiceImpl implements ViewerService {
 
+  private PasswordEncoder passwordEncoder;
   private ViewerRepository viewerRepository;
 
   @Autowired
-  public ViewerServiceImpl(ViewerRepository viewerRepository) {
+  public ViewerServiceImpl(PasswordEncoder passwordEncoder, ViewerRepository viewerRepository) {
+    this.passwordEncoder = passwordEncoder;
     this.viewerRepository = viewerRepository;
   }
 
@@ -27,6 +31,11 @@ public class ViewerServiceImpl implements ViewerService {
     viewer.setActivation(generateKey());
     viewer = viewerRepository.save(viewer);
     return new RegistrationResDTO(viewer);
+  }
+
+  @Override
+  public Optional<Viewer> fetchByUsername(String username) {
+    return viewerRepository.findFirstByUsername(username);
   }
 
   private String generateKey() {
@@ -41,7 +50,7 @@ public class ViewerServiceImpl implements ViewerService {
   private Viewer convert(RegistrationReqDTO reqDTO) {
     Viewer viewer = new Viewer();
     viewer.setUsername(reqDTO.getUsername());
-    viewer.setPassword(reqDTO.getPassword());
+    viewer.setPassword(passwordEncoder.encode(reqDTO.getPassword().trim()));
     viewer.setEmail(reqDTO.getEmail());
     return viewer;
   }
