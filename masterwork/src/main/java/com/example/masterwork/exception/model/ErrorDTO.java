@@ -1,5 +1,10 @@
 package com.example.masterwork.exception.model;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class ErrorDTO {
 
   private String status;

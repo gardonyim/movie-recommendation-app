@@ -48,11 +48,16 @@ public class ViewerServiceImpl implements ViewerService {
   }
 
   private Viewer convert(RegistrationReqDTO reqDTO) {
-    Viewer viewer = new Viewer();
-    viewer.setUsername(reqDTO.getUsername());
-    viewer.setPassword(passwordEncoder.encode(reqDTO.getPassword().trim()));
-    viewer.setEmail(reqDTO.getEmail());
-    return viewer;
+    return Viewer.builder()
+        .username(reqDTO.getUsername())
+        .password(passwordEncoder.encode(reqDTO.getPassword().trim()))
+        .email(reqDTO.getEmail())
+        .build();
+//    Viewer viewer = new Viewer();
+//    viewer.setUsername(reqDTO.getUsername());
+//    viewer.setPassword(passwordEncoder.encode(reqDTO.getPassword().trim()));
+//    viewer.setEmail(reqDTO.getEmail());
+//    return viewer;
   }
 
   private void validateRegistration(RegistrationReqDTO reqDTO) {

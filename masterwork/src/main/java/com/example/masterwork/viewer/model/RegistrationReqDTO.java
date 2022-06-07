@@ -11,12 +11,12 @@ import javax.validation.constraints.Size;
 @Setter
 public class RegistrationReqDTO {
 
-  @NotNull(message = "Username is required.")
+  @NotNull(message = "Username is required")
   private String username;
-  @NotNull(message = "Password is required.")
-  @Size(min = 8, message = "Password should be al least 8 characters long.")
+  @NotNull(message = "Password is required")
+  @Size(min = 8, message = "Password should be al least 8 characters long")
   private String password;
-  @Email(message = "Valid e-mail address is required.")
+  @Email(message = "Valid e-mail address is required")
   private String email;
 
 }

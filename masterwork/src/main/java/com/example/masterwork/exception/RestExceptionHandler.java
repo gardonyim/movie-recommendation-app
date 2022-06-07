@@ -1,12 +1,28 @@
 package com.example.masterwork.exception;
 
 import com.example.masterwork.exception.model.ErrorDTO;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-@ControllerAdvice
+@RestControllerAdvice
 public class RestExceptionHandler {
+
+  private ExceptionService exceptionService;
+
+  @Autowired
+  public RestExceptionHandler(ExceptionService exceptionService) {
+    this.exceptionService = exceptionService;
+  }
+
+  @ExceptionHandler(MethodArgumentNotValidException.class)
+  public ResponseEntity<ErrorDTO> handleMethodArgumentNotValid(MethodArgumentNotValidException e) {
+    ErrorDTO errorDTO = exceptionService.createErrorDTO(e);
+    return ResponseEntity.status(400).body(errorDTO);
+  }
 
   @ExceptionHandler(RequestCauseConflictException.class)
   public ResponseEntity<ErrorDTO> handleConflictCausedByRequest(RequestCauseConflictException e) {
