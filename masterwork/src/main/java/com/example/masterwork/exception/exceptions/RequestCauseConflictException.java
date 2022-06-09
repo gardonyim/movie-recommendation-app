@@ -1,4 +1,4 @@
-package com.example.masterwork.exception;
+package com.example.masterwork.exception.exceptions;
 
 public class RequestCauseConflictException extends RuntimeException {
 

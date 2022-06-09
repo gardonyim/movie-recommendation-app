@@ -1,6 +1,6 @@
 package com.example.masterwork.viewer;
 
-import com.example.masterwork.exception.RequestCauseConflictException;
+import com.example.masterwork.exception.exceptions.RequestCauseConflictException;
 import com.example.masterwork.viewer.model.RegistrationReqDTO;
 import com.example.masterwork.viewer.model.RegistrationResDTO;
 import com.example.masterwork.viewer.model.Viewer;

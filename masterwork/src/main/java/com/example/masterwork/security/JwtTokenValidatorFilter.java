@@ -1,15 +1,13 @@
 package com.example.masterwork.security;
 
-import com.example.masterwork.exception.InvalidUsername;
+import com.example.masterwork.exception.exceptions.InvalidCredentialsException;
 import com.example.masterwork.viewer.ViewerService;
 import com.example.masterwork.viewer.model.Viewer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.filter.OncePerRequestFilter;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -74,7 +72,7 @@ public class JwtTokenValidatorFilter extends OncePerRequestFilter {
         .parseClaimsJws(jwt)
         .getBody();
     String username = String.valueOf(claims.get("username"));
-    return viewerService.fetchByUsername(username).orElseThrow(InvalidUsername::new);
+    return viewerService.fetchByUsername(username).orElseThrow(InvalidCredentialsException::new);
   }
 
   private String getJWT_KEY() {
