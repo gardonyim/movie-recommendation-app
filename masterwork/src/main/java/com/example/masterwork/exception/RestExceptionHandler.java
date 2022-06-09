@@ -3,6 +3,7 @@ package com.example.masterwork.exception;
 import com.example.masterwork.exception.exceptions.InvalidCredentialsException;
 import com.example.masterwork.exception.exceptions.RequestCauseConflictException;
 import com.example.masterwork.exception.exceptions.RequestForbiddenResourceException;
+import com.example.masterwork.exception.exceptions.ResourceNotFoundException;
 import com.example.masterwork.exception.model.ErrorDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -34,6 +35,11 @@ public class RestExceptionHandler {
   @ExceptionHandler(RequestForbiddenResourceException.class)
   public ResponseEntity<ErrorDTO> handleRequestForbiddenResource(RequestForbiddenResourceException e) {
     return ResponseEntity.status(403).body(new ErrorDTO(e.getMessage()));
+  }
+
+  @ExceptionHandler(ResourceNotFoundException.class)
+  public ResponseEntity<ErrorDTO> handleResourceNotFound(ResourceNotFoundException e) {
+    return ResponseEntity.status(404).body(new ErrorDTO(e.getMessage()));
   }
 
   @ExceptionHandler(RequestCauseConflictException.class)
