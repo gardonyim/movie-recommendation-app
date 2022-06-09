@@ -5,8 +5,10 @@ import com.example.masterwork.viewer.ViewerService;
 import com.example.masterwork.viewer.model.Viewer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
+import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 import io.jsonwebtoken.Claims;
@@ -45,7 +47,11 @@ public class JwtTokenValidatorFilter extends OncePerRequestFilter {
       filterChain.doFilter(request, response);
       return;
     }
-    String jwt = request.getHeader("Authorization").substring(7).trim();
+    String token = request.getHeader("Authorization");
+    if (token == null || token.isEmpty()) {
+      throw new AuthenticationCredentialsNotFoundException("No authentication token is provided!");
+    } //TODO: fix no token case
+    String jwt = token.substring(7).trim();
 
     SecretKey key = Keys.hmacShaKeyFor(
         getJWT_KEY().getBytes(StandardCharsets.UTF_8));

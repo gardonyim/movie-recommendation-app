@@ -1,5 +1,6 @@
 package com.example.masterwork.viewer.model;
 
+import com.example.masterwork.recommendation.models.Recommendation;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -11,6 +12,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import java.util.List;
 
 @Getter
 @Setter
@@ -29,5 +32,7 @@ public class Viewer {
   private String email;
   private String activation;
   private Boolean enabled;
+  @OneToMany
+  private List<Recommendation> recommendations;
 
 }

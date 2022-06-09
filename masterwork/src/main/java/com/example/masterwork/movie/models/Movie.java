@@ -2,6 +2,7 @@ package com.example.masterwork.movie.models;
 
 import com.example.masterwork.actor.models.Actor;
 import com.example.masterwork.director.models.Director;
+import com.example.masterwork.recommendation.models.Recommendation;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import java.util.List;
 
 @Getter
@@ -28,5 +30,7 @@ public class Movie {
   private Director director;
   @ManyToMany(mappedBy = "movies")
   private List<Actor> cast;
+  @OneToMany
+  private List<Recommendation> recommendations;
 
 }

@@ -27,7 +27,7 @@ public class DirectorServiceImpl implements DirectorService {
   public MovieListDTO fetchMoviesByDirector(int id) {
     Director director = directorRepository.findById(id).orElseThrow(DirectorNotFoundException::new);
     return new MovieListDTO(director.getMovies().stream()
-        .map(MovieDTO::new)
+        .map(m -> movieService.convertToDTO(m))
         .collect(Collectors.toList()));
   }
 }
