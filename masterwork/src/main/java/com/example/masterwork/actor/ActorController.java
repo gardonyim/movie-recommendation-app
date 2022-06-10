@@ -21,5 +21,5 @@ public class ActorController {
   public ResponseEntity<MovieListDTO> moviesByActor(@PathVariable int id) {
     return ResponseEntity.ok(actorService.fetchMoviesByActor(id));
   }
-  
+
 }
