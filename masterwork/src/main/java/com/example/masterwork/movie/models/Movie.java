@@ -27,6 +27,7 @@ public class Movie {
   private String title;
   private Integer releaseYear;
   private Integer length;
+  private Double averageRating;
   @ManyToOne
   private Director director;
   @ManyToMany(mappedBy = "movies")

@@ -1,7 +1,6 @@
 package com.example.masterwork.movie.models;
 
 import com.example.masterwork.actor.models.Actor;
-import com.example.masterwork.recommendation.models.RecommendationDTO;
 import com.example.masterwork.recommendation.models.RecommendationListItemDTO;
 import lombok.Builder;
 import lombok.Getter;
@@ -20,6 +19,7 @@ public class MovieDetailsDTO {
   private List<Actor> cast;
   private Integer releaseYear;
   private Integer length;
+  private Double averageRating;
   private List<RecommendationListItemDTO> recommendations;
 
 }

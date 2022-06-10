@@ -6,7 +6,6 @@ import com.example.masterwork.movie.models.MovieDTO;
 import com.example.masterwork.movie.models.MovieDetailsDTO;
 import com.example.masterwork.movie.models.MovieListDTO;
 import com.example.masterwork.recommendation.models.Recommendation;
-import com.example.masterwork.recommendation.models.RecommendationDTO;
 import com.example.masterwork.recommendation.models.RecommendationListItemDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -28,23 +27,11 @@ public class MovieServiceImpl implements MovieService {
   }
 
   @Override
-  public MovieDTO convertToDTO(Movie movie) {
-    return MovieDTO.builder()
-        .id(movie.getId())
-        .title(movie.getTitle())
-        .avarageRating(movie.getRecommendations().stream()
-            .mapToInt(Recommendation::getRating)
-            .average()
-            .orElse(new Double(null)))
-        .build();
-  }
-
-  @Override
   public MovieListDTO fetchTopRated(Integer limit) {
     limit = limit <= 0 ? Integer.parseInt(defaultLimit) : limit;
     return new MovieListDTO(movieRepository.findAll().stream()
-        .map(this::convertToDTO)
-        .sorted((m1, m2) -> m2.getAvarageRating().compareTo(m1.getAvarageRating()))
+        .map(MovieDTO::new)
+        .sorted((m1, m2) -> m2.getAverageRating().compareTo(m1.getAverageRating()))
         .limit(limit)
         .collect(Collectors.toList()));
   }
@@ -72,11 +59,19 @@ public class MovieServiceImpl implements MovieService {
         .director(movie.getDirector().getName())
         .cast(movie.getCast())
         .releaseYear(movie.getReleaseYear())
-        .length(movie.getLength())
+        .length(movie.getLength()) //TODO: add average rating field
         .recommendations(movie.getRecommendations().stream()
-            .map(r -> new RecommendationListItemDTO(r))
+            .map(RecommendationListItemDTO::new)
             .collect(Collectors.toList()))
         .build();
+  }
+
+  @Override
+  public void updateRating(Movie movie) {
+    movie.setAverageRating(movie.getRecommendations().stream()
+        .mapToInt(r -> r.getRating())
+        .average()
+        .orElse(new Double(null)));
   }
 
 }

@@ -7,8 +7,6 @@ import com.example.masterwork.movie.models.MovieListDTO;
 
 public interface MovieService {
 
-  MovieDTO convertToDTO(Movie movie);
-
   MovieListDTO fetchTopRated(Integer limit);
 
   MovieDetailsDTO fetchMovieById(int id);
@@ -18,5 +16,7 @@ public interface MovieService {
   MovieDetailsDTO fetchMovieByTitle(String title);
 
   MovieDetailsDTO convertToDetailsDTO(Movie movie);
+
+  void updateRating(Movie movie);
 
 }

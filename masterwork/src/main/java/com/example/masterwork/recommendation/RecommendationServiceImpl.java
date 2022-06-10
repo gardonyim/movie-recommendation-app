@@ -28,12 +28,19 @@ public class RecommendationServiceImpl implements RecommendationService {
         .anyMatch(r -> r.getMovie().getId() == recommendationDTO.getMovieId())) {
       throw new RequestCauseConflictException("Recommendation already exists");
     }
-    return new RecommendationDTO(recommendationRepository.save(Recommendation.builder()
+    Recommendation recommendation = save(viewer, movie, recommendationDTO);
+    movieService.updateRating(movie);
+    return new RecommendationDTO(recommendation);
+  }
+
+  @Override
+  public Recommendation save(Viewer viewer, Movie movie, RecommendationDTO recommendationDTO) {
+    return recommendationRepository.save(Recommendation.builder()
         .rating(recommendationDTO.getRating())
         .recommendationText(recommendationDTO.getRecommendationText())
         .movie(movie)
         .viewer(viewer)
-        .build()));
+        .build());
   }
 
 }

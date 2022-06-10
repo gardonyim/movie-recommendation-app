@@ -1,6 +1,8 @@
 package com.example.masterwork.director;
 
 import com.example.masterwork.director.models.Director;
+import com.example.masterwork.director.models.DirectorDTO;
+import com.example.masterwork.director.models.DirectorListDTO;
 import com.example.masterwork.exception.exceptions.DirectorNotFoundException;
 import com.example.masterwork.movie.MovieService;
 import com.example.masterwork.movie.models.MovieDTO;
@@ -27,7 +29,15 @@ public class DirectorServiceImpl implements DirectorService {
   public MovieListDTO fetchMoviesByDirector(int id) {
     Director director = directorRepository.findById(id).orElseThrow(DirectorNotFoundException::new);
     return new MovieListDTO(director.getMovies().stream()
-        .map(m -> movieService.convertToDTO(m))
+        .map(MovieDTO::new)
         .collect(Collectors.toList()));
   }
+
+  @Override
+  public DirectorListDTO fetchAllDirectors() {
+    return new DirectorListDTO(directorRepository.findAll().stream()
+        .map(DirectorDTO::new)
+        .collect(Collectors.toList()));
+  }
+
 }
