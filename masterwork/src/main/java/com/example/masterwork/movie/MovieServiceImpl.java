@@ -1,5 +1,6 @@
 package com.example.masterwork.movie;
 
+import com.example.masterwork.exception.exceptions.MovieNotFoundException;
 import com.example.masterwork.movie.models.Movie;
 import com.example.masterwork.movie.models.MovieDTO;
 import com.example.masterwork.movie.models.MovieListDTO;
@@ -16,7 +17,7 @@ public class MovieServiceImpl implements MovieService {
   private MovieRepository movieRepository;
 
   @Value("defaultLimitForLists")
-  private Integer defaultLimit;
+  private String defaultLimit;
 
   @Autowired
   public MovieServiceImpl(MovieRepository movieRepository) {
@@ -37,12 +38,17 @@ public class MovieServiceImpl implements MovieService {
 
   @Override
   public MovieListDTO fetchTopRated(Integer limit) {
-    limit = (limit == null || limit <= 0) ? defaultLimit : limit;
+    limit = limit <= 0 ? Integer.parseInt(defaultLimit) : limit;
     return new MovieListDTO(movieRepository.findAll().stream()
-        .map(m -> convertToDTO(m))
+        .map(this::convertToDTO)
         .sorted((m1, m2) -> m2.getAvarageRating().compareTo(m1.getAvarageRating()))
         .limit(limit)
         .collect(Collectors.toList()));
+  }
+
+  @Override
+  public Movie fetchMovieById(int id) {
+    return movieRepository.findById(id).orElseThrow(MovieNotFoundException::new);
   }
 
 }

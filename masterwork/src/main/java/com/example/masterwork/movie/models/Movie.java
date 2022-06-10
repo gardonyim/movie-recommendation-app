@@ -6,6 +6,7 @@ import com.example.masterwork.recommendation.models.Recommendation;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -30,7 +31,7 @@ public class Movie {
   private Director director;
   @ManyToMany(mappedBy = "movies")
   private List<Actor> cast;
-  @OneToMany
+  @OneToMany(mappedBy = "movie", cascade = CascadeType.ALL)
   private List<Recommendation> recommendations;
 
 }

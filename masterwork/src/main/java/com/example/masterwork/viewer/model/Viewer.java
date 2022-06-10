@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -32,7 +33,7 @@ public class Viewer {
   private String email;
   private String activation;
   private Boolean enabled;
-  @OneToMany
+  @OneToMany(mappedBy = "viewer", cascade = CascadeType.ALL)
   private List<Recommendation> recommendations;
 
 }

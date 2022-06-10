@@ -10,4 +10,6 @@ public interface MovieService {
 
   MovieListDTO fetchTopRated(Integer limit);
 
+  Movie fetchMovieById(int id);
+
 }
