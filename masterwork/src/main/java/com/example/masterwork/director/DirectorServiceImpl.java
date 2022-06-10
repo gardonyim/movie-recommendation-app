@@ -4,6 +4,7 @@ import com.example.masterwork.director.models.Director;
 import com.example.masterwork.director.models.DirectorDTO;
 import com.example.masterwork.director.models.DirectorListDTO;
 import com.example.masterwork.exception.exceptions.DirectorNotFoundException;
+import com.example.masterwork.exception.exceptions.RequestCauseConflictException;
 import com.example.masterwork.movie.MovieService;
 import com.example.masterwork.movie.models.MovieDTO;
 import com.example.masterwork.movie.models.MovieListDTO;
@@ -39,5 +40,18 @@ public class DirectorServiceImpl implements DirectorService {
         .map(DirectorDTO::new)
         .collect(Collectors.toList()));
   }
+
+  @Override
+  public DirectorDTO addDirector(DirectorDTO directorDTO) {
+    if (directorRepository.findFirstByName(directorDTO.getName()).isPresent()) {
+      throw new RequestCauseConflictException("Director is already in the database");
+    }
+    return new DirectorDTO(directorRepository.save(Director.builder().name(directorDTO.getName()).build()));
+  }
+
+//  @Override
+//  public Director getDirectorByName(String name) {
+//    return directorRepository.findFirstByName(name).orElseThrow(DirectorNotFoundException::new);
+//  }
 
 }
