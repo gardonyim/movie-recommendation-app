@@ -2,6 +2,7 @@ package com.example.masterwork.movie;
 
 import com.example.masterwork.movie.models.Movie;
 import com.example.masterwork.movie.models.MovieDTO;
+import com.example.masterwork.movie.models.MovieDetailsDTO;
 import com.example.masterwork.movie.models.MovieListDTO;
 
 public interface MovieService {
@@ -10,8 +11,12 @@ public interface MovieService {
 
   MovieListDTO fetchTopRated(Integer limit);
 
-  Movie fetchMovieById(int id);
+  MovieDetailsDTO fetchMovieById(int id);
 
-  Movie fetchMovieByTitle(String title);
+  Movie getMovieById(int id);
+
+  MovieDetailsDTO fetchMovieByTitle(String title);
+
+  MovieDetailsDTO convertToDetailsDTO(Movie movie);
 
 }

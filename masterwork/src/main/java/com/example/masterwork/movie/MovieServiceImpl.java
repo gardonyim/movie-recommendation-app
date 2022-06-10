@@ -3,8 +3,11 @@ package com.example.masterwork.movie;
 import com.example.masterwork.exception.exceptions.MovieNotFoundException;
 import com.example.masterwork.movie.models.Movie;
 import com.example.masterwork.movie.models.MovieDTO;
+import com.example.masterwork.movie.models.MovieDetailsDTO;
 import com.example.masterwork.movie.models.MovieListDTO;
 import com.example.masterwork.recommendation.models.Recommendation;
+import com.example.masterwork.recommendation.models.RecommendationDTO;
+import com.example.masterwork.recommendation.models.RecommendationListItemDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -47,13 +50,33 @@ public class MovieServiceImpl implements MovieService {
   }
 
   @Override
-  public Movie fetchMovieById(int id) {
+  public MovieDetailsDTO fetchMovieById(int id) {
+    return convertToDetailsDTO(getMovieById(id));
+  }
+
+  @Override
+  public Movie getMovieById(int id) {
     return movieRepository.findById(id).orElseThrow(MovieNotFoundException::new);
   }
 
   @Override
-  public Movie fetchMovieByTitle(String title) {
-    return movieRepository.findMovieByTitle(title).orElseThrow(MovieNotFoundException::new);
+  public MovieDetailsDTO fetchMovieByTitle(String title) {
+    return convertToDetailsDTO(movieRepository.findMovieByTitle(title).orElseThrow(MovieNotFoundException::new));
+  }
+
+  @Override
+  public MovieDetailsDTO convertToDetailsDTO(Movie movie) {
+    return MovieDetailsDTO.builder()
+        .id(movie.getId())
+        .title(movie.getTitle())
+        .director(movie.getDirector().getName())
+        .cast(movie.getCast())
+        .releaseYear(movie.getReleaseYear())
+        .length(movie.getLength())
+        .recommendations(movie.getRecommendations().stream()
+            .map(r -> new RecommendationListItemDTO(r))
+            .collect(Collectors.toList()))
+        .build();
   }
 
 }

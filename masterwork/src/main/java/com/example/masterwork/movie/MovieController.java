@@ -1,6 +1,7 @@
 package com.example.masterwork.movie;
 
 import com.example.masterwork.movie.models.Movie;
+import com.example.masterwork.movie.models.MovieDetailsDTO;
 import com.example.masterwork.movie.models.MovieListDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -25,12 +26,12 @@ public class MovieController {
   }
 
   @GetMapping("/movie/{id}")
-  public ResponseEntity<Movie> getMoviById(@PathVariable int id) {
+  public ResponseEntity<MovieDetailsDTO> getMoviById(@PathVariable int id) {
     return ResponseEntity.ok(movieService.fetchMovieById(id));
   }
 
   @GetMapping("/movie")
-  public ResponseEntity<Movie> getMovieByTitle(@RequestParam(required = false) String title) {
+  public ResponseEntity<MovieDetailsDTO> getMovieByTitle(@RequestParam(required = false) String title) {
     return ResponseEntity.ok(movieService.fetchMovieByTitle(title));
   }
 
