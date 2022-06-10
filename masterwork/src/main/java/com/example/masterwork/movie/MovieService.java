@@ -12,4 +12,6 @@ public interface MovieService {
 
   Movie fetchMovieById(int id);
 
+  Movie fetchMovieByTitle(String title);
+
 }

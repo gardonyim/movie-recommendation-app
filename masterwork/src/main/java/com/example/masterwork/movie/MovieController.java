@@ -29,4 +29,9 @@ public class MovieController {
     return ResponseEntity.ok(movieService.fetchMovieById(id));
   }
 
+  @GetMapping("/movie")
+  public ResponseEntity<Movie> getMovieByTitle(@RequestParam(required = false) String title) {
+    return ResponseEntity.ok(movieService.fetchMovieByTitle(title));
+  }
+
 }

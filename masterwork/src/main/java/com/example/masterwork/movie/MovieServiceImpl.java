@@ -51,4 +51,9 @@ public class MovieServiceImpl implements MovieService {
     return movieRepository.findById(id).orElseThrow(MovieNotFoundException::new);
   }
 
+  @Override
+  public Movie fetchMovieByTitle(String title) {
+    return movieRepository.findMovieByTitle(title).orElseThrow(MovieNotFoundException::new);
+  }
+
 }
