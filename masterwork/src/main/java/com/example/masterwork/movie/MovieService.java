@@ -1,9 +1,9 @@
 package com.example.masterwork.movie;
 
 import com.example.masterwork.movie.models.Movie;
-import com.example.masterwork.movie.models.MovieDTO;
 import com.example.masterwork.movie.models.MovieDetailsDTO;
 import com.example.masterwork.movie.models.MovieListDTO;
+import com.example.masterwork.movie.models.MovieReqDTO;
 
 public interface MovieService {
 
@@ -15,8 +15,12 @@ public interface MovieService {
 
   MovieDetailsDTO fetchMovieByTitle(String title);
 
+  Movie getMovieByTitle(String title);
+
   MovieDetailsDTO convertToDetailsDTO(Movie movie);
 
   void updateRating(Movie movie);
+
+  MovieDetailsDTO createMovie(MovieReqDTO reqDTO);
 
 }

@@ -13,6 +13,8 @@ public interface DirectorService {
 
   DirectorDTO addDirector(DirectorDTO directorDTO);
 
+  Director getDirectorById(int id);
+
 //  Director getDirectorByName(String name);
 
 }

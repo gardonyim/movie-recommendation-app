@@ -5,25 +5,21 @@ import com.example.masterwork.director.models.DirectorDTO;
 import com.example.masterwork.director.models.DirectorListDTO;
 import com.example.masterwork.exception.exceptions.DirectorNotFoundException;
 import com.example.masterwork.exception.exceptions.RequestCauseConflictException;
-import com.example.masterwork.movie.MovieService;
 import com.example.masterwork.movie.models.MovieDTO;
 import com.example.masterwork.movie.models.MovieListDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 public class DirectorServiceImpl implements DirectorService {
 
   private DirectorRepository directorRepository;
-  private MovieService movieService;
 
   @Autowired
-  public DirectorServiceImpl(DirectorRepository directorRepository, MovieService movieService) {
+  public DirectorServiceImpl(DirectorRepository directorRepository) {
     this.directorRepository = directorRepository;
-    this.movieService = movieService;
   }
 
   @Override
@@ -47,6 +43,11 @@ public class DirectorServiceImpl implements DirectorService {
       throw new RequestCauseConflictException("Director is already in the database");
     }
     return new DirectorDTO(directorRepository.save(Director.builder().name(directorDTO.getName()).build()));
+  }
+
+  @Override
+  public Director getDirectorById(int id) {
+    return directorRepository.findById(id).orElseThrow(DirectorNotFoundException::new);
   }
 
 //  @Override

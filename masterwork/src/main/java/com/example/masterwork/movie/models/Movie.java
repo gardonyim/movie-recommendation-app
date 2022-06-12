@@ -3,7 +3,10 @@ package com.example.masterwork.movie.models;
 import com.example.masterwork.actor.models.Actor;
 import com.example.masterwork.director.models.Director;
 import com.example.masterwork.recommendation.models.Recommendation;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.CascadeType;
@@ -18,6 +21,9 @@ import java.util.List;
 
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 @Entity(name = "movies")
 public class Movie {
 
@@ -25,6 +31,7 @@ public class Movie {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer id;
   private String title;
+  private GenreType genre;
   private Integer releaseYear;
   private Integer length;
   private Double averageRating;

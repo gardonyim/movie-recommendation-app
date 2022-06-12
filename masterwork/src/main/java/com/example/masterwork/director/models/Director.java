@@ -2,6 +2,7 @@ package com.example.masterwork.director.models;
 
 import com.example.masterwork.movie.models.Movie;
 import jdk.jfr.BooleanFlag;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,6 +19,8 @@ import java.util.List;
 @Getter
 @Setter
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity(name = "directors")
 public class Director {
 

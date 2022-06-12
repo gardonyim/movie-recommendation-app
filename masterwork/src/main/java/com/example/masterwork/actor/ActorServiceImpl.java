@@ -5,7 +5,6 @@ import com.example.masterwork.actor.models.ActorDTO;
 import com.example.masterwork.actor.models.ActorListDTO;
 import com.example.masterwork.exception.exceptions.ActorNotFoundException;
 import com.example.masterwork.exception.exceptions.RequestCauseConflictException;
-import com.example.masterwork.movie.MovieService;
 import com.example.masterwork.movie.models.MovieDTO;
 import com.example.masterwork.movie.models.MovieListDTO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,12 +16,10 @@ import java.util.stream.Collectors;
 public class ActorServiceImpl implements ActorService {
 
   private ActorRepository actorRepository;
-  private MovieService movieService;
 
   @Autowired
-  public ActorServiceImpl(ActorRepository actorRepository, MovieService movieService) {
+  public ActorServiceImpl(ActorRepository actorRepository) {
     this.actorRepository = actorRepository;
-    this.movieService = movieService;
   }
 
   @Override
@@ -46,6 +43,11 @@ public class ActorServiceImpl implements ActorService {
       throw new RequestCauseConflictException("Actor/actress is already in the database");
     }
     return new ActorDTO(actorRepository.save(Actor.builder().name(actorDTO.getName()).build()));
+  }
+
+  @Override
+  public Actor getActorById(int id) {
+    return actorRepository.findById(id).orElseThrow(ActorNotFoundException::new);
   }
 
 }
