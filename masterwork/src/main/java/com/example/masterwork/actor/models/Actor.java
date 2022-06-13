@@ -28,12 +28,7 @@ public class Actor {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer id;
   private String name;
-  @ManyToMany
-  @JoinTable(
-      name = "actor_movie",
-      joinColumns = @JoinColumn(name = "movie_id"),
-      inverseJoinColumns = @JoinColumn(name = "actor_id")
-  )
+  @ManyToMany(mappedBy = "cast")
   private List<Movie> movies;
 
 }

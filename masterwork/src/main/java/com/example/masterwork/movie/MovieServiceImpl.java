@@ -2,6 +2,7 @@ package com.example.masterwork.movie;
 
 import com.example.masterwork.actor.ActorService;
 import com.example.masterwork.actor.models.Actor;
+import com.example.masterwork.actor.models.ActorDTO;
 import com.example.masterwork.director.DirectorService;
 import com.example.masterwork.exception.exceptions.MovieNotFoundException;
 import com.example.masterwork.exception.exceptions.RequestCauseConflictException;
@@ -73,7 +74,9 @@ public class MovieServiceImpl implements MovieService {
         .id(movie.getId())
         .title(movie.getTitle())
         .director(movie.getDirector().getName())
-        .cast(movie.getCast())
+        .cast(movie.getCast().stream()
+            .map(ActorDTO::new)
+            .collect(Collectors.toList()))
         .releaseYear(movie.getReleaseYear())
         .length(movie.getLength())
         .recommendations(movie.getRecommendations().stream()
