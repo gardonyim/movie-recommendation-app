@@ -100,10 +100,18 @@ public class MovieServiceImpl implements MovieService {
 
   @Override
   public MovieDetailsDTO createMovie(MovieReqDTO reqDTO) {
-    if (movieRepository.findMovieByTitle(reqDTO.getTitle()).isPresent()) {
+    validateTitle(reqDTO.getTitle());
+    return convertToDetailsDTO(movieRepository.save(convertToMovie(reqDTO)));
+  }
+
+  private void validateTitle(String title) {
+    if (movieRepository.findMovieByTitle(title).isPresent()) {
       throw new RequestCauseConflictException("Movie is already in the database");
     }
-    Movie movie = Movie.builder()
+  }
+
+  private Movie convertToMovie(MovieReqDTO reqDTO) {
+    return Movie.builder()
         .title(reqDTO.getTitle())
         .director(directorService.getDirectorById(reqDTO.getDirectorId()))
         .length(reqDTO.getLength())
@@ -114,8 +122,6 @@ public class MovieServiceImpl implements MovieService {
             .collect(Collectors.toList()))
         .recommendations(new ArrayList<>())
         .build();
-    Movie newMovie = movieRepository.save(movie);
-    return convertToDetailsDTO(newMovie);
   }
 
 }

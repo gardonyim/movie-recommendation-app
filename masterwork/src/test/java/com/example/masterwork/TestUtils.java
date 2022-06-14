@@ -1,10 +1,14 @@
 package com.example.masterwork;
 
 import com.example.masterwork.actor.models.Actor;
+import com.example.masterwork.actor.models.ActorDTO;
 import com.example.masterwork.director.models.Director;
 import com.example.masterwork.genre.models.Genre;
 import com.example.masterwork.movie.models.Movie;
+import com.example.masterwork.movie.models.MovieDetailsDTO;
+import com.example.masterwork.movie.models.MovieReqDTO;
 import com.example.masterwork.recommendation.models.Recommendation;
+import com.example.masterwork.recommendation.models.RecommendationListItemDTO;
 import com.example.masterwork.viewer.model.Viewer;
 
 import java.util.Collections;
@@ -29,6 +33,14 @@ public class TestUtils {
 
   public static Movie defaultMovie() {
     return testMovieBuilder().build();
+  }
+
+  public static MovieDetailsDTO defaultDetailsDTO() {
+    return testDetailsDtoBuilder().build();
+  }
+
+  public static MovieReqDTO defaultReqDTO() {
+    return testReqDtoBuilder().build();
   }
 
   public static Recommendation defaultRecommendation() {
@@ -70,6 +82,33 @@ public class TestUtils {
         .cast(Collections.singletonList(new Actor()))
         .recommendations(Collections.singletonList(new Recommendation()))
         .genre(new Genre());
+  }
+
+  public static MovieDetailsDTO.MovieDetailsDTOBuilder testDetailsDtoBuilder() {
+    return MovieDetailsDTO.builder()
+        .id(666)
+        .title("test movie")
+        .director("Test Director")
+        .cast(Collections.singletonList(new ActorDTO(testActorBuilder().id(888).name("Test Actor").build())))
+        .genre("testgenre")
+        .releaseYear(2022)
+        .length(90)
+        .averageRating(5.0)
+        .recommendations(Collections.singletonList(new RecommendationListItemDTO(testRecommendationBuilder()
+            .id(555)
+            .rating(5)
+            .recommendationText("recommendation text")
+            .build())));
+  }
+
+  public static MovieReqDTO.MovieReqDTOBuilder testReqDtoBuilder() {
+    return MovieReqDTO.builder()
+        .title("test movie")
+        .directorId(999)
+        .releaseYear(2022)
+        .length(90)
+        .actorIdList(Collections.singletonList(888))
+        .genreId(777);
   }
 
   public static Recommendation.RecommendationBuilder testRecommendationBuilder() {

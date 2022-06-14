@@ -1,10 +1,12 @@
 package com.example.masterwork.recommendation.models;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
+@EqualsAndHashCode
 public class RecommendationListItemDTO {
 
   private int id;
