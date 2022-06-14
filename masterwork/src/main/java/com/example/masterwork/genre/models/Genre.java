@@ -1,6 +1,8 @@
 package com.example.masterwork.genre.models;
 
 import com.example.masterwork.movie.models.Movie;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -15,7 +17,9 @@ import java.util.List;
 
 @Getter
 @Setter
+@AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @Entity(name = "genres")
 public class Genre {
 

@@ -1,10 +1,12 @@
 package com.example.masterwork.viewer.model;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
+@EqualsAndHashCode
 public class RegistrationResDTO {
 
   private int id;

@@ -28,16 +28,16 @@ public class MovieServiceImpl implements MovieService {
   private DirectorService directorService;
   private GenreService genreService;
 
-  @Value("${defaultLimitForLists:}")
   private String defaultLimit;
 
   @Autowired
   public MovieServiceImpl(MovieRepository movieRepository, ActorService actorService, DirectorService directorService,
-                          GenreService genreService) {
+                          GenreService genreService, @Value("${defaultLimitForLists:}") String defaultLimit) {
     this.movieRepository = movieRepository;
     this.actorService = actorService;
     this.directorService = directorService;
     this.genreService = genreService;
+    this.defaultLimit = defaultLimit;
   }
 
   @Override

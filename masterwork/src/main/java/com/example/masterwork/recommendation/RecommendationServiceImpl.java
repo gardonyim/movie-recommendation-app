@@ -23,11 +23,11 @@ public class RecommendationServiceImpl implements RecommendationService {
 
   @Override
   public RecommendationDTO addRecommendation(Viewer viewer, RecommendationDTO recommendationDTO) {
-    Movie movie = movieService.getMovieById(recommendationDTO.getMovieId());
     if (viewer.getRecommendations().stream()
         .anyMatch(r -> r.getMovie().getId() == recommendationDTO.getMovieId())) {
       throw new RequestCauseConflictException("Recommendation already exists");
     }
+    Movie movie = movieService.getMovieById(recommendationDTO.getMovieId());
     movieService.updateRating(movie, recommendationDTO.getRating());
     Recommendation recommendation = save(viewer, movie, recommendationDTO);
     return new RecommendationDTO(recommendation);

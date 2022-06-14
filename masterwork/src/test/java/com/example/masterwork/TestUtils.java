@@ -5,6 +5,7 @@ import com.example.masterwork.director.models.Director;
 import com.example.masterwork.genre.models.Genre;
 import com.example.masterwork.movie.models.Movie;
 import com.example.masterwork.recommendation.models.Recommendation;
+import com.example.masterwork.viewer.model.Viewer;
 
 import java.util.Collections;
 
@@ -22,12 +23,20 @@ public class TestUtils {
     return testDirectorBuilder().build();
   }
 
+  public static Genre defaultGenre() {
+    return testGenreBuilder().build();
+  }
+
   public static Movie defaultMovie() {
     return testMovieBuilder().build();
   }
 
   public static Recommendation defaultRecommendation() {
     return testRecommendationBuilder().build();
+  }
+
+  public static Viewer defaultViewer() {
+    return testViewerBuilder().build();
   }
 
   public static Actor.ActorBuilder testActorBuilder() {
@@ -41,6 +50,13 @@ public class TestUtils {
     return Director.builder()
         .id(random(100, 999))
         .name("Test Director")
+        .movies(Collections.singletonList(new Movie()));
+  }
+
+  public static Genre.GenreBuilder testGenreBuilder() {
+    return Genre.builder()
+        .id(random(100, 999))
+        .type("testgenre")
         .movies(Collections.singletonList(new Movie()));
   }
 
@@ -62,6 +78,17 @@ public class TestUtils {
         .rating(random(1, 10))
         .recommendationText("recommendation text")
         .movie(new Movie());
+  }
+
+  public static Viewer.ViewerBuilder testViewerBuilder() {
+    return Viewer.builder()
+        .id(random(100, 999))
+        .username("testuser")
+        .password("password")
+        .email("test@test")
+        .activation("hgjzfttzvztcvbescdcfd")
+        .enabled(true)
+        .recommendations(Collections.singletonList(new Recommendation()));
   }
 
 }
