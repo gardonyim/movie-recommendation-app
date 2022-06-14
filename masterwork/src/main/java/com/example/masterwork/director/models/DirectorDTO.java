@@ -1,5 +1,6 @@
 package com.example.masterwork.director.models;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -9,6 +10,7 @@ import javax.validation.constraints.NotNull;
 @Getter
 @Setter
 @NoArgsConstructor
+@EqualsAndHashCode
 public class DirectorDTO {
 
   private int id;

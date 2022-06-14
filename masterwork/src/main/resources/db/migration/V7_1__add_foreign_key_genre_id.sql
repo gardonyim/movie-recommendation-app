@@ -1,0 +1,1 @@
+ALTER TABLE movies ADD FOREIGN KEY (genre_id) REFERENCES genres(id);

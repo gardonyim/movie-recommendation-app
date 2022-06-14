@@ -1,0 +1,5 @@
+CREATE TABLE genres (
+    id INT NOT NULL AUTO_INCREMENT,
+    type VARCHAR(20),
+    PRIMARY KEY (id)
+)

@@ -18,6 +18,6 @@ public class MovieReqDTO {
   private List<Integer> actorIdList;
   private Integer releaseYear;
   private Integer length;
-  private String genre;
+  private Integer genreId;
 
 }

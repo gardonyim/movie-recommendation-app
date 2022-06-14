@@ -1,12 +1,11 @@
 package com.example.masterwork.movie;
 
 import com.example.masterwork.actor.ActorService;
-import com.example.masterwork.actor.models.Actor;
 import com.example.masterwork.actor.models.ActorDTO;
 import com.example.masterwork.director.DirectorService;
 import com.example.masterwork.exception.exceptions.MovieNotFoundException;
 import com.example.masterwork.exception.exceptions.RequestCauseConflictException;
-import com.example.masterwork.movie.models.GenreType;
+import com.example.masterwork.genre.GenreService;
 import com.example.masterwork.movie.models.Movie;
 import com.example.masterwork.movie.models.MovieDTO;
 import com.example.masterwork.movie.models.MovieDetailsDTO;
@@ -20,7 +19,6 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
 @Service
 public class MovieServiceImpl implements MovieService {
@@ -28,15 +26,18 @@ public class MovieServiceImpl implements MovieService {
   private MovieRepository movieRepository;
   private ActorService actorService;
   private DirectorService directorService;
+  private GenreService genreService;
 
   @Value("${defaultLimitForLists:}")
   private String defaultLimit;
 
   @Autowired
-  public MovieServiceImpl(MovieRepository movieRepository, ActorService actorService, DirectorService directorService) {
+  public MovieServiceImpl(MovieRepository movieRepository, ActorService actorService, DirectorService directorService,
+                          GenreService genreService) {
     this.movieRepository = movieRepository;
     this.actorService = actorService;
     this.directorService = directorService;
+    this.genreService = genreService;
   }
 
   @Override
@@ -78,8 +79,10 @@ public class MovieServiceImpl implements MovieService {
         .cast(movie.getCast().stream()
             .map(ActorDTO::new)
             .collect(Collectors.toList()))
+        .genre(movie.getGenre().getType())
         .releaseYear(movie.getReleaseYear())
         .length(movie.getLength())
+        .averageRating(movie.getAverageRating())
         .recommendations(movie.getRecommendations().stream()
             .map(RecommendationListItemDTO::new)
             .collect(Collectors.toList()))
@@ -105,7 +108,7 @@ public class MovieServiceImpl implements MovieService {
         .director(directorService.getDirectorById(reqDTO.getDirectorId()))
         .length(reqDTO.getLength())
         .releaseYear(reqDTO.getReleaseYear())
-        .genre(GenreType.valueOf(reqDTO.getGenre().toUpperCase()))
+        .genre(genreService.getGenreById(reqDTO.getGenreId()))
         .cast(reqDTO.getActorIdList().stream()
             .map(id -> actorService.getActorById(id))
             .collect(Collectors.toList()))

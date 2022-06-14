@@ -2,6 +2,7 @@ package com.example.masterwork.movie.models;
 
 import com.example.masterwork.actor.models.Actor;
 import com.example.masterwork.director.models.Director;
+import com.example.masterwork.genre.models.Genre;
 import com.example.masterwork.recommendation.models.Recommendation;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -33,7 +34,8 @@ public class Movie {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer id;
   private String title;
-  private GenreType genre;
+  @ManyToOne
+  private Genre genre;
   private Integer releaseYear;
   private Integer length;
   private Double averageRating;

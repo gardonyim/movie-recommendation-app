@@ -74,7 +74,7 @@ public class ActorServiceTest {
   public void when_addActorValidDTO_should_returnProperActor() {
     Actor actor = defaultActor();
     when(actorRepository.findActorByName(anyString())).thenReturn(Optional.empty());
-    when(actorRepository.save(any())).thenReturn(actor);
+    when(actorRepository.save(any(Actor.class))).thenReturn(actor);
     ActorDTO expected = new ActorDTO(actor);
 
     ActorDTO actual = actorService.addActor(new ActorDTO(actor));

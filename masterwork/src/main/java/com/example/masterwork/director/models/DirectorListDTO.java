@@ -1,11 +1,12 @@
 package com.example.masterwork.director.models;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.Setter;
 
 import java.util.List;
 
 @Getter
+@EqualsAndHashCode
 public class DirectorListDTO {
 
   private List<DirectorDTO> directors;
