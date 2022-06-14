@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -34,6 +36,7 @@ public class Viewer {
   private String activation;
   private Boolean enabled;
   @OneToMany(mappedBy = "viewer", cascade = CascadeType.ALL)
+  @LazyCollection(LazyCollectionOption.FALSE)
   private List<Recommendation> recommendations;
 
 }

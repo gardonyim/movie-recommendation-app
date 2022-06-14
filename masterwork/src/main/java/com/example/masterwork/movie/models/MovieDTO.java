@@ -1,16 +1,14 @@
 package com.example.masterwork.movie.models;
 
-import com.example.masterwork.recommendation.models.Recommendation;
-import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
-
 @Getter
 @Setter
 @NoArgsConstructor
+@EqualsAndHashCode
 public class MovieDTO {
 
   private Integer id;

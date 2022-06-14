@@ -14,7 +14,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
   public static final String[] PRIVATE_ENDPOINTS = {
       "/movie/**",
       "/director/**",
-      "/actor/**"
+      "/actor/**",
+      "/recommendation/**"
   };
   private ViewerService viewerService;
 

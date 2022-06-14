@@ -18,8 +18,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 @Service
 public class MovieServiceImpl implements MovieService {
@@ -28,7 +29,7 @@ public class MovieServiceImpl implements MovieService {
   private ActorService actorService;
   private DirectorService directorService;
 
-  @Value("defaultLimitForLists")
+  @Value("${defaultLimitForLists:}")
   private String defaultLimit;
 
   @Autowired
@@ -40,10 +41,10 @@ public class MovieServiceImpl implements MovieService {
 
   @Override
   public MovieListDTO fetchTopRated(Integer limit) {
-    limit = limit <= 0 ? Integer.parseInt(defaultLimit) : limit;
+    limit = limit == null || limit <= 0 ? Integer.parseInt(defaultLimit) : limit;
     return new MovieListDTO(movieRepository.findAll().stream()
         .map(MovieDTO::new)
-        .sorted((m1, m2) -> m2.getAverageRating().compareTo(m1.getAverageRating()))
+        .sorted((m1, m2) -> m2.getAverageRating() == null ? -1 : m2.getAverageRating().compareTo(m1.getAverageRating()))
         .limit(limit)
         .collect(Collectors.toList()));
   }
@@ -86,11 +87,12 @@ public class MovieServiceImpl implements MovieService {
   }
 
   @Override
-  public void updateRating(Movie movie) {
-    movie.setAverageRating(movie.getRecommendations().stream()
-        .mapToInt(r -> r.getRating())
+  public void updateRating(Movie movie, int rating) {
+    IntStream ratings = movie.getRecommendations().stream()
+            .mapToInt(r -> r.getRating());
+    movie.setAverageRating(IntStream.concat(ratings, IntStream.of(rating))
         .average()
-        .orElse(new Double(null)));
+        .orElseGet(null));
   }
 
   @Override

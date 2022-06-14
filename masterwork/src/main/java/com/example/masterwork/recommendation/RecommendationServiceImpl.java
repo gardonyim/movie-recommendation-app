@@ -28,8 +28,8 @@ public class RecommendationServiceImpl implements RecommendationService {
         .anyMatch(r -> r.getMovie().getId() == recommendationDTO.getMovieId())) {
       throw new RequestCauseConflictException("Recommendation already exists");
     }
+    movieService.updateRating(movie, recommendationDTO.getRating());
     Recommendation recommendation = save(viewer, movie, recommendationDTO);
-    movieService.updateRating(movie);
     return new RecommendationDTO(recommendation);
   }
 
