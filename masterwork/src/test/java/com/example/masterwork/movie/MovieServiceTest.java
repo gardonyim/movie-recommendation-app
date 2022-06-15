@@ -12,13 +12,14 @@ import com.example.masterwork.movie.models.MovieDetailsDTO;
 import com.example.masterwork.movie.models.MovieListDTO;
 import com.example.masterwork.recommendation.models.Recommendation;
 import com.example.masterwork.recommendation.models.RecommendationListItemDTO;
-import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -60,7 +61,11 @@ public class MovieServiceTest {
   @InjectMocks
   MovieServiceImpl movieService;
 
-  @Disabled
+  @BeforeEach
+  void setUp() {
+    ReflectionTestUtils.setField(movieService, "defaultLimit", "10");
+  }
+
   @Test
   public void when_fetchTopRatedWithNoLimit_should_returnProperListOfDefaultLimitMovies() {
     int expectedLimit = 10;
@@ -75,7 +80,6 @@ public class MovieServiceTest {
     assertEquals(expectedLimit, actual.getMovies().size());
   }
 
-  @Disabled
   @Test
   public void when_fetchTopRatedWithZeroLimit_should_returnProperListOfDefaultLimitMovies() {
     int expectedLimit = 10;
@@ -90,7 +94,6 @@ public class MovieServiceTest {
     assertEquals(expectedLimit, actual.getMovies().size());
   }
 
-  @Disabled
   @Test
   public void when_fetchTopRatedWithLimit_should_returnProperListOfLimitNumberOfMovies() {
     int expectedLimit = 5;

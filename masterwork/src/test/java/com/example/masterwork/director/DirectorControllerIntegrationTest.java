@@ -1,7 +1,8 @@
-package com.example.masterwork.actor;
+package com.example.masterwork.director;
 
 import com.example.masterwork.TestNoSecurityConfig;
 import com.example.masterwork.actor.models.ActorDTO;
+import com.example.masterwork.director.models.DirectorDTO;
 import com.example.masterwork.exception.model.ErrorDTO;
 import com.google.gson.Gson;
 import org.junit.jupiter.api.Disabled;
@@ -27,15 +28,15 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Import(TestNoSecurityConfig.class)
 @Transactional
 @Sql("classpath:data.sql")
-public class ActorControllerIntegrationTest {
+public class DirectorControllerIntegrationTest {
 
   @Autowired
   MockMvc mockMvc;
   Gson gson = new Gson();
 
   @Test
-  public void test_getMoviesByActorId_should_respondOkStatusAndProperJson() throws Exception {
-    mockMvc.perform(MockMvcRequestBuilders.get("/actor/1/movies"))
+  public void test_getMoviesByDirectorId_should_respondOkStatusAndProperJson() throws Exception {
+    mockMvc.perform(MockMvcRequestBuilders.get("/director/1/movies"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.movies").isArray())
         .andExpect(jsonPath("$.movies[0].id", is(1)))
@@ -44,30 +45,30 @@ public class ActorControllerIntegrationTest {
   }
 
   @Test
-  public void test_getMoviesByActorInvalidId_should_respondNotFoundStatusANdProperErrorMessage() throws Exception {
-    ErrorDTO expected = new ErrorDTO("Actor/actress is not in the database");
+  public void test_getMoviesByDirectorInvalidId_should_respondNotFoundStatusANdProperErrorMessage() throws Exception {
+    ErrorDTO expected = new ErrorDTO("Director is not in the database");
 
-    mockMvc.perform(MockMvcRequestBuilders.get("/actor/0/movies"))
+    mockMvc.perform(MockMvcRequestBuilders.get("/director/0/movies"))
         .andExpect(status().isNotFound())
         .andExpect(content().json(gson.toJson(expected)));
   }
 
   @Test
-  public void test_getAllActors_should_respondOkStatusAndProperJson() throws Exception {
-    mockMvc.perform(MockMvcRequestBuilders.get("/actor/all"))
+  public void test_getAllDirector_should_respondOkStatusAndProperJson() throws Exception {
+    mockMvc.perform(MockMvcRequestBuilders.get("/director/all"))
         .andExpect(status().isOk())
-        .andExpect(jsonPath("$.actors").isArray())
-        .andExpect(jsonPath("$.actors[0].id", is(1)))
-        .andExpect(jsonPath("$.actors[0].name", is("testactor")));
+        .andExpect(jsonPath("$.directors").isArray())
+        .andExpect(jsonPath("$.directors[0].id", is(1)))
+        .andExpect(jsonPath("$.directors[0].name", is("testdirector")));
   }
 
   @Disabled
   @Test
-  public void test_postNewActor_should_respondCreatedStatusAndProperJson() throws Exception {
-    ActorDTO request = new ActorDTO();
-    request.setName("newActor");
+  public void test_postNewDirector_should_respondCreatedStatusAndProperJson() throws Exception {
+    DirectorDTO request = new DirectorDTO();
+    request.setName("newDirector");
 
-    mockMvc.perform(MockMvcRequestBuilders.post("/actor")
+    mockMvc.perform(MockMvcRequestBuilders.post("/director")
             .contentType(MediaType.APPLICATION_JSON)
             .content(gson.toJson(request)))
         .andExpect(status().isCreated())
@@ -76,10 +77,10 @@ public class ActorControllerIntegrationTest {
   }
 
   @Test
-  public void test_postActorWithNoName_should_respondBadRequestStatusAndProperErrorMessage() throws Exception {
+  public void test_postDirectorWithNoName_should_respondBadRequestStatusAndProperErrorMessage() throws Exception {
     ErrorDTO expected = new ErrorDTO("Name is required");
 
-    mockMvc.perform(MockMvcRequestBuilders.post("/actor")
+    mockMvc.perform(MockMvcRequestBuilders.post("/director")
             .contentType(MediaType.APPLICATION_JSON)
             .content(gson.toJson(new ActorDTO())))
         .andExpect(status().isBadRequest())
@@ -87,12 +88,12 @@ public class ActorControllerIntegrationTest {
   }
 
   @Test
-  public void test_postExistingActor_should_respondConflictAndProperErrorMessage() throws Exception {
-    ActorDTO request = new ActorDTO();
-    request.setName("testactor");
-    ErrorDTO expected = new ErrorDTO("Actor/actress is already in the database");
+  public void test_postExistingDirector_should_respondConflictAndProperErrorMessage() throws Exception {
+    DirectorDTO request = new DirectorDTO();
+    request.setName("testdirector");
+    ErrorDTO expected = new ErrorDTO("Director is already in the database");
 
-    mockMvc.perform(MockMvcRequestBuilders.post("/actor")
+    mockMvc.perform(MockMvcRequestBuilders.post("/director")
             .contentType(MediaType.APPLICATION_JSON)
             .content(gson.toJson(request)))
         .andExpect(status().isConflict())
