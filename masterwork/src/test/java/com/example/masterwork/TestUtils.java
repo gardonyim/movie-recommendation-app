@@ -9,6 +9,7 @@ import com.example.masterwork.movie.models.MovieDetailsDTO;
 import com.example.masterwork.movie.models.MovieReqDTO;
 import com.example.masterwork.recommendation.models.Recommendation;
 import com.example.masterwork.recommendation.models.RecommendationListItemDTO;
+import com.example.masterwork.viewer.model.RegistrationReqDTO;
 import com.example.masterwork.viewer.model.Viewer;
 
 import java.util.Collections;
@@ -45,6 +46,10 @@ public class TestUtils {
 
   public static Recommendation defaultRecommendation() {
     return testRecommendationBuilder().build();
+  }
+
+  public static RegistrationReqDTO defaultRegistration() {
+    return testRegistrationBuilder().build();
   }
 
   public static Viewer defaultViewer() {
@@ -104,11 +109,11 @@ public class TestUtils {
   public static MovieReqDTO.MovieReqDTOBuilder testReqDtoBuilder() {
     return MovieReqDTO.builder()
         .title("test movie")
-        .directorId(999)
+        .directorId(1)
         .releaseYear(2022)
         .length(90)
-        .actorIdList(Collections.singletonList(888))
-        .genreId(777);
+        .actorIdList(Collections.singletonList(1))
+        .genreId(1);
   }
 
   public static Recommendation.RecommendationBuilder testRecommendationBuilder() {
@@ -117,6 +122,13 @@ public class TestUtils {
         .rating(random(1, 10))
         .recommendationText("recommendation text")
         .movie(new Movie());
+  }
+
+  public static RegistrationReqDTO.RegistrationReqDTOBuilder testRegistrationBuilder() {
+    return RegistrationReqDTO.builder()
+        .username("newtestuser")
+        .password("password")
+        .email("test@test.test");
   }
 
   public static Viewer.ViewerBuilder testViewerBuilder() {

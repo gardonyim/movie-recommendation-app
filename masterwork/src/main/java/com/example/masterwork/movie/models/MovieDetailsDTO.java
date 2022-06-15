@@ -17,7 +17,7 @@ import java.util.List;
 @Builder
 public class MovieDetailsDTO {
 
-  private int id;
+  private Integer id;
   private String title;
   private String director;
   private List<ActorDTO> cast;

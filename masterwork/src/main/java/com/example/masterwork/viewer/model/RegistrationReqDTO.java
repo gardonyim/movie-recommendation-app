@@ -22,6 +22,7 @@ public class RegistrationReqDTO {
   @NotNull(message = "Password is required")
   @Size(min = 8, message = "Password should be al least 8 characters long")
   private String password;
+  @NotNull(message = "Email address is required")
   @Email(message = "Valid e-mail address is required")
   private String email;
 

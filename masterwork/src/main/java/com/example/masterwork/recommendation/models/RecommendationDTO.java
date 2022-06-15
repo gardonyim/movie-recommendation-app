@@ -15,10 +15,10 @@ public class RecommendationDTO {
 
   private Integer id;
   @NotNull(message = "Rating is required")
-  private int rating;
+  private Integer rating;
   private String recommendationText;
   @NotNull(message = "Movie ID is required")
-  private int movieId;
+  private Integer movieId;
 
   public RecommendationDTO(Recommendation recommendation) {
     this.id = recommendation.getId();

@@ -22,7 +22,8 @@ public class RecommendationController {
   }
 
   @PostMapping("/recommendation")
-  public ResponseEntity<RecommendationDTO> addRecommendation(@Valid @RequestBody RecommendationDTO recommendationDTO, Authentication auth) {
+  public ResponseEntity<RecommendationDTO> addRecommendation(@Valid @RequestBody RecommendationDTO recommendationDTO,
+                                                             Authentication auth) {
     Viewer viewer = (Viewer) auth.getPrincipal();
     return ResponseEntity.status(201).body(recommendationService.addRecommendation(viewer, recommendationDTO));
   }
