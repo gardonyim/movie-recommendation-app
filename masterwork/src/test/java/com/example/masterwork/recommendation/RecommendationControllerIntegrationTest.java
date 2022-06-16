@@ -19,7 +19,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import javax.transaction.Transactional;
-
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -46,7 +45,7 @@ public class RecommendationControllerIntegrationTest {
   public void test_postRecommendation_should_respondOkStatusAndProperJson() throws Exception {
     RecommendationDTO request = new RecommendationDTO(testRecommendationBuilder()
         .id(null)
-        .movie(testMovieBuilder().id(1).build())
+        .movie(testMovieBuilder().id(111).build())
         .build());
     Viewer viewer = testViewerBuilder().recommendations(new ArrayList<>()).build();
     Authentication auth = new UsernamePasswordAuthenticationToken(viewer, null, null);
@@ -112,10 +111,10 @@ public class RecommendationControllerIntegrationTest {
   public void test_postExistingRecommendation_should_respondBadRequestStatusAndErrorMessage() throws Exception {
     RecommendationDTO request = new RecommendationDTO();
     request.setRating(5);
-    request.setMovieId(1);
+    request.setMovieId(111);
     Viewer viewer = testViewerBuilder()
         .recommendations(Collections.singletonList(testRecommendationBuilder()
-            .movie(testMovieBuilder().id(1).build())
+            .movie(testMovieBuilder().id(111).build())
             .build()))
         .build();
     Authentication auth = new UsernamePasswordAuthenticationToken(viewer, null, null);

@@ -4,7 +4,6 @@ import com.example.masterwork.TestNoSecurityConfig;
 import com.example.masterwork.exception.model.ErrorDTO;
 import com.example.masterwork.viewer.model.RegistrationReqDTO;
 import com.google.gson.Gson;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -35,7 +34,6 @@ public class ViewerControllerIntegrationTest {
   MockMvc mockMvc;
   Gson gson = new Gson();
 
-  @Disabled
   @Test
   public void test_postRegisterValidRequest_should_respondOkStatusAndProperJson() throws Exception {
     RegistrationReqDTO request = defaultRegistration();

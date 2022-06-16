@@ -4,7 +4,6 @@ import com.example.masterwork.TestNoSecurityConfig;
 import com.example.masterwork.actor.models.ActorDTO;
 import com.example.masterwork.exception.model.ErrorDTO;
 import com.google.gson.Gson;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -35,10 +34,10 @@ public class ActorControllerIntegrationTest {
 
   @Test
   public void test_getMoviesByActorId_should_respondOkStatusAndProperJson() throws Exception {
-    mockMvc.perform(MockMvcRequestBuilders.get("/actor/1/movies"))
+    mockMvc.perform(MockMvcRequestBuilders.get("/actor/111/movies"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.movies").isArray())
-        .andExpect(jsonPath("$.movies[0].id", is(1)))
+        .andExpect(jsonPath("$.movies[0].id", is(111)))
         .andExpect(jsonPath("$.movies[0].title", is("testmovie")))
         .andExpect(jsonPath("$.movies[0].averageRating", is(5.0)));
   }
@@ -57,11 +56,10 @@ public class ActorControllerIntegrationTest {
     mockMvc.perform(MockMvcRequestBuilders.get("/actor/all"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.actors").isArray())
-        .andExpect(jsonPath("$.actors[0].id", is(1)))
+        .andExpect(jsonPath("$.actors[0].id", is(111)))
         .andExpect(jsonPath("$.actors[0].name", is("testactor")));
   }
 
-  @Disabled
   @Test
   public void test_postNewActor_should_respondCreatedStatusAndProperJson() throws Exception {
     ActorDTO request = new ActorDTO();

@@ -4,7 +4,6 @@ import com.example.masterwork.TestNoSecurityConfig;
 import com.example.masterwork.exception.model.ErrorDTO;
 import com.example.masterwork.movie.models.MovieReqDTO;
 import com.google.gson.Gson;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -35,15 +34,13 @@ public class MovieControllerIntegrationTest {
   MockMvc mockMvc;
   Gson gson = new Gson();
 
-  @Disabled
   @Test
   public void test_getTopRatedMoviesNoLimit_should_respondOkStatusAndProperJsonWithDefaultLimitItems() throws Exception {
-
     mockMvc.perform(MockMvcRequestBuilders.get("/movie/topRated"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.movies").isArray())
-        .andExpect(jsonPath("$.movies.length()", is(3)))
-        .andExpect(jsonPath("$.movies[0].id", is(2)))
+        .andExpect(jsonPath("$.movies.length()", is(2)))
+        .andExpect(jsonPath("$.movies[0].id", is(112)))
         .andExpect(jsonPath("$.movies[0].title", is("testmovie2")))
         .andExpect(jsonPath("$.movies[0].averageRating", is(6.0)));
   }
@@ -54,25 +51,25 @@ public class MovieControllerIntegrationTest {
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.movies").isArray())
         .andExpect(jsonPath("$.movies.length()", is(1)))
-        .andExpect(jsonPath("$.movies[0].id", is(2)))
+        .andExpect(jsonPath("$.movies[0].id", is(112)))
         .andExpect(jsonPath("$.movies[0].title", is("testmovie2")))
         .andExpect(jsonPath("$.movies[0].averageRating", is(6.0)));
   }
 
   @Test
   public void test_getMovieByValidId_should_respondOkStatusAndProperJson() throws Exception {
-    mockMvc.perform(MockMvcRequestBuilders.get("/movie/1"))
+    mockMvc.perform(MockMvcRequestBuilders.get("/movie/111"))
         .andExpect(status().isOk())
-        .andExpect(jsonPath("$.id", is(1)))
+        .andExpect(jsonPath("$.id", is(111)))
         .andExpect(jsonPath("$.title", is("testmovie")))
         .andExpect(jsonPath("$.director", is("testdirector")))
-        .andExpect(jsonPath("$.cast[0].id", is(1)))
+        .andExpect(jsonPath("$.cast[0].id", is(111)))
         .andExpect(jsonPath("$.cast[0].name", is("testactor")))
         .andExpect(jsonPath("$.genre", is("testgenre")))
         .andExpect(jsonPath("$.releaseYear", is(2022)))
         .andExpect(jsonPath("$.length", is(90)))
         .andExpect(jsonPath("$.averageRating", is(5.0)))
-        .andExpect(jsonPath("$.recommendations[0].id", is(1)))
+        .andExpect(jsonPath("$.recommendations[0].id", is(111)))
         .andExpect(jsonPath("$.recommendations[0].rating", is(5)))
         .andExpect(jsonPath("$.recommendations[0].recommendationText", is("test")));
   }
@@ -90,16 +87,16 @@ public class MovieControllerIntegrationTest {
   public void test_getMovieByValidTitle_should_respondOkStatusAndProperJson() throws Exception {
     mockMvc.perform(MockMvcRequestBuilders.get("/movie?title=testmovie"))
         .andExpect(status().isOk())
-        .andExpect(jsonPath("$.id", is(1)))
+        .andExpect(jsonPath("$.id", is(111)))
         .andExpect(jsonPath("$.title", is("testmovie")))
         .andExpect(jsonPath("$.director", is("testdirector")))
-        .andExpect(jsonPath("$.cast[0].id", is(1)))
+        .andExpect(jsonPath("$.cast[0].id", is(111)))
         .andExpect(jsonPath("$.cast[0].name", is("testactor")))
         .andExpect(jsonPath("$.genre", is("testgenre")))
         .andExpect(jsonPath("$.releaseYear", is(2022)))
         .andExpect(jsonPath("$.length", is(90)))
         .andExpect(jsonPath("$.averageRating", is(5.0)))
-        .andExpect(jsonPath("$.recommendations[0].id", is(1)))
+        .andExpect(jsonPath("$.recommendations[0].id", is(111)))
         .andExpect(jsonPath("$.recommendations[0].rating", is(5)))
         .andExpect(jsonPath("$.recommendations[0].recommendationText", is("test")));
   }
@@ -113,7 +110,6 @@ public class MovieControllerIntegrationTest {
         .andExpect(content().json(gson.toJson(expected)));
   }
 
-  @Disabled
   @Test
   public void test_postMovieWithValidRequest_should_respondCreatedStatusAndProperJson() throws Exception {
     MovieReqDTO request = defaultReqDTO();
@@ -125,7 +121,7 @@ public class MovieControllerIntegrationTest {
         .andExpect(jsonPath("$.id").isNumber())
         .andExpect(jsonPath("$.title", is("test movie")))
         .andExpect(jsonPath("$.director", is("testdirector")))
-        .andExpect(jsonPath("$.cast[0].id", is(1)))
+        .andExpect(jsonPath("$.cast[0].id", is(111)))
         .andExpect(jsonPath("$.cast[0].name", is("testactor")))
         .andExpect(jsonPath("$.genre", is("testgenre")))
         .andExpect(jsonPath("$.releaseYear", is(2022)))

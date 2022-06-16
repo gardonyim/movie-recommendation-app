@@ -109,11 +109,11 @@ public class TestUtils {
   public static MovieReqDTO.MovieReqDTOBuilder testReqDtoBuilder() {
     return MovieReqDTO.builder()
         .title("test movie")
-        .directorId(1)
+        .directorId(111)
         .releaseYear(2022)
         .length(90)
-        .actorIdList(Collections.singletonList(1))
-        .genreId(1);
+        .actorIdList(Collections.singletonList(111))
+        .genreId(111);
   }
 
   public static Recommendation.RecommendationBuilder testRecommendationBuilder() {
