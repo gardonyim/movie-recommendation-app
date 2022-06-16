@@ -2,10 +2,12 @@ package com.example.masterwork.recommendation;
 
 import com.example.masterwork.recommendation.models.RecommendationDTO;
 import com.example.masterwork.recommendation.models.RecommendationModDTO;
+import com.example.masterwork.utilities.DeleteDTO;
 import com.example.masterwork.viewer.model.Viewer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -36,6 +38,12 @@ public class RecommendationController {
                                                                 @PathVariable int id, Authentication auth) {
     Viewer viewer = (Viewer) auth.getPrincipal();
     return ResponseEntity.ok(recommendationService.modifyRecommendation(viewer, id, modDTO));
+  }
+
+  @DeleteMapping("/recommendation/{id}")
+  public ResponseEntity<DeleteDTO> deleteRecommendation(@PathVariable int id, Authentication auth) {
+    Viewer viewer = (Viewer) auth.getPrincipal();
+    return ResponseEntity.ok(recommendationService.removeRecommendation(viewer, id));
   }
 
 }

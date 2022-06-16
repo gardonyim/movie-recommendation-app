@@ -24,7 +24,10 @@ INSERT INTO actor_movie (movie_id, actor_id) VALUES
     (111, 111);
 
 INSERT INTO viewers (id, username, password, email, activation, enabled) VALUES
-    (111, 'testviewer', 'password', 'test@test', 'testactivation', true);
+    (111, 'testviewer', 'password', 'test@test', 'testactivation', true),
+    (112, 'testuser2', 'password', 'test@test', 'testactivation', true);
 
 INSERT INTO recommendations (id, recommendation_text, rating, movie_id, viewer_id) VALUES
-    (111, 'test', 5, 111, 111);
+    (111, 'test', 5, 111, 111),
+    (112, 'test2', 5, 112, 111),
+    (113, 'test3', 5, 113, 111);

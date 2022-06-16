@@ -9,6 +9,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -48,6 +50,7 @@ public class Movie {
       inverseJoinColumns = @JoinColumn(name = "actor_id")
   )
   private List<Actor> cast;
+  @LazyCollection(LazyCollectionOption.FALSE)
   @OneToMany(mappedBy = "movie", cascade = CascadeType.ALL)
   private List<Recommendation> recommendations;
 

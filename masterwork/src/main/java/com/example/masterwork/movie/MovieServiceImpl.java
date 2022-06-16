@@ -90,7 +90,7 @@ public class MovieServiceImpl implements MovieService {
   }
 
   @Override
-  public void updateRating(Movie movie, int rating) {
+  public void updateRating(Movie movie, Integer rating) {
     IntStream ratings = movie.getRecommendations().stream()
             .mapToInt(r -> r.getRating());
     movie.setAverageRating(IntStream.concat(ratings, IntStream.of(rating))
@@ -102,6 +102,11 @@ public class MovieServiceImpl implements MovieService {
   public MovieDetailsDTO createMovie(MovieReqDTO reqDTO) {
     validateTitle(reqDTO.getTitle());
     return convertToDetailsDTO(movieRepository.save(convertToMovie(reqDTO)));
+  }
+
+  @Override
+  public Movie save(Movie movie) {
+    return movieRepository.save(movie);
   }
 
   private void validateTitle(String title) {

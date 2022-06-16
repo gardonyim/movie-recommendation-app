@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 @Getter
@@ -14,6 +16,8 @@ import javax.validation.constraints.NotNull;
 public class RecommendationModDTO {
 
   @NotNull(message = "Rating is required")
+  @Min(value = 1, message = "Lowest rating is 1")
+  @Max(value = 10, message = "Highest rating is 10")
   private Integer rating;
   private String recommendationText;
 

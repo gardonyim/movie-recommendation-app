@@ -3,6 +3,8 @@ package com.example.masterwork.recommendation;
 import com.example.masterwork.TestNoSecurityConfig;
 import com.example.masterwork.exception.model.ErrorDTO;
 import com.example.masterwork.recommendation.models.RecommendationDTO;
+import com.example.masterwork.recommendation.models.RecommendationModDTO;
+import com.example.masterwork.utilities.DeleteDTO;
 import com.example.masterwork.viewer.model.Viewer;
 import com.google.gson.Gson;
 import org.junit.jupiter.api.Disabled;
@@ -22,9 +24,11 @@ import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import static com.example.masterwork.TestUtils.defaultRecommendation;
 import static com.example.masterwork.TestUtils.testMovieBuilder;
 import static com.example.masterwork.TestUtils.testRecommendationBuilder;
 import static com.example.masterwork.TestUtils.testViewerBuilder;
+import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -42,7 +46,7 @@ public class RecommendationControllerIntegrationTest {
 
   @Disabled
   @Test
-  public void test_postRecommendation_should_respondOkStatusAndProperJson() throws Exception {
+  public void test_postRecommendationValidRequest_should_respondCreatedStatusAndProperJson() throws Exception {
     RecommendationDTO request = new RecommendationDTO(testRecommendationBuilder()
         .id(null)
         .movie(testMovieBuilder().id(111).build())
@@ -125,6 +129,139 @@ public class RecommendationControllerIntegrationTest {
             .content(gson.toJson(request))
             .principal(auth))
         .andExpect(status().isConflict())
+        .andExpect(content().json(gson.toJson(expected)));
+  }
+
+  @Test
+  public void test_putRecommendationValidRequest_should_respondOkStatusAndProperJson() throws Exception {
+    RecommendationModDTO request = new RecommendationModDTO(6, "modified test2");
+    Viewer viewer = testViewerBuilder()
+        .id(111)
+        .recommendations(Collections.singletonList(testRecommendationBuilder()
+            .id(112)
+            .movie(testMovieBuilder().id(112).build())
+            .build()))
+        .build();
+    Authentication auth = new UsernamePasswordAuthenticationToken(viewer, null, null);
+
+    mockMvc.perform(MockMvcRequestBuilders.put("/recommendation/112")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(gson.toJson(request))
+            .principal(auth))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.id", is(112)))
+        .andExpect(jsonPath("$.rating", is(6)))
+        .andExpect(jsonPath("$.recommendationText", is("modified test2")))
+        .andExpect(jsonPath("$.movieId", is(112)));
+  }
+
+  @Test
+  public void test_putRecommendationNoRating_should_respondBadRequestStatusAndErrorMessage() throws Exception {
+    RecommendationModDTO request = new RecommendationModDTO(null, "modified test2");
+    Viewer viewer = testViewerBuilder()
+        .id(111)
+        .recommendations(Collections.singletonList(testRecommendationBuilder()
+            .id(112)
+            .movie(testMovieBuilder().id(112).build())
+            .build()))
+        .build();
+    Authentication auth = new UsernamePasswordAuthenticationToken(viewer, null, null);
+    ErrorDTO expected = new ErrorDTO("Rating is required");
+
+    mockMvc.perform(MockMvcRequestBuilders.put("/recommendation/112")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(gson.toJson(request))
+            .principal(auth))
+        .andExpect(status().isBadRequest())
+        .andExpect(content().json(gson.toJson(expected)));
+  }
+
+  @Test
+  public void test_putRecommendationRatingBelow1_should_respondBadRequestStatusAndErrorMessage() throws Exception {
+    RecommendationModDTO request = new RecommendationModDTO(0, "modified test2");
+    Viewer viewer = testViewerBuilder()
+        .id(111)
+        .recommendations(Collections.singletonList(testRecommendationBuilder()
+            .id(112)
+            .movie(testMovieBuilder().id(112).build())
+            .build()))
+        .build();
+    Authentication auth = new UsernamePasswordAuthenticationToken(viewer, null, null);
+    ErrorDTO expected = new ErrorDTO("Lowest rating is 1");
+
+    mockMvc.perform(MockMvcRequestBuilders.put("/recommendation/112")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(gson.toJson(request))
+            .principal(auth))
+        .andExpect(status().isBadRequest())
+        .andExpect(content().json(gson.toJson(expected)));
+  }
+
+  @Test
+  public void test_putRecommendationRatingAbove10_should_respondBadRequestStatusAndErrorMessage() throws Exception {
+    RecommendationModDTO request = new RecommendationModDTO(11, "modified test2");
+    Viewer viewer = testViewerBuilder()
+        .id(111)
+        .recommendations(Collections.singletonList(testRecommendationBuilder()
+            .id(112)
+            .movie(testMovieBuilder().id(112).build())
+            .build()))
+        .build();
+    Authentication auth = new UsernamePasswordAuthenticationToken(viewer, null, null);
+    ErrorDTO expected = new ErrorDTO("Highest rating is 10");
+
+    mockMvc.perform(MockMvcRequestBuilders.put("/recommendation/112")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(gson.toJson(request))
+            .principal(auth))
+        .andExpect(status().isBadRequest())
+        .andExpect(content().json(gson.toJson(expected)));
+  }
+
+  @Test
+  public void test_putRecommendationBelongToOtherViewer_should_respondForbiddenStatusAndErrorMessage() throws Exception {
+    RecommendationModDTO request = new RecommendationModDTO(10, "modified test");
+    Viewer viewer = testViewerBuilder()
+        .id(112)
+        .recommendations(Collections.emptyList())
+        .build();
+    Authentication auth = new UsernamePasswordAuthenticationToken(viewer, null, null);
+    ErrorDTO expected = new ErrorDTO("Forbidden operation: recommendation was made by other viewer");
+
+    mockMvc.perform(MockMvcRequestBuilders.put("/recommendation/112")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(gson.toJson(request))
+            .principal(auth))
+        .andExpect(status().isForbidden())
+        .andExpect(content().json(gson.toJson(expected)));
+  }
+
+  @Disabled
+  @Test
+  public void test_deleteOwnRecommendation_should_respondOkStatusAndProperJson() throws Exception {
+    Viewer viewer = testViewerBuilder().id(111)
+        .recommendations(Collections.singletonList(testRecommendationBuilder().id(113)
+            .movie(testMovieBuilder().recommendations(Collections.singletonList(defaultRecommendation())).build())
+            .build()))
+        .build();
+    Authentication auth = new UsernamePasswordAuthenticationToken(viewer, null, null);
+    DeleteDTO expected = new DeleteDTO(113);
+
+    mockMvc.perform(MockMvcRequestBuilders.delete("/recommendation/113")
+            .principal(auth))
+        .andExpect(status().isOk())
+        .andExpect(content().json(gson.toJson(expected)));
+  }
+
+  @Test
+  public void test_deleteOthersRecommendation_should_returnForbiddenStatusAndErrorMessage() throws Exception {
+    Viewer viewer = testViewerBuilder().recommendations(Collections.emptyList()).build();
+    Authentication auth = new UsernamePasswordAuthenticationToken(viewer, null, null);
+    ErrorDTO expected = new ErrorDTO("Forbidden operation: recommendation was made by other viewer");
+
+    mockMvc.perform(MockMvcRequestBuilders.delete("/recommendation/113")
+            .principal(auth))
+        .andExpect(status().isForbidden())
         .andExpect(content().json(gson.toJson(expected)));
   }
 

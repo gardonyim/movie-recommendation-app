@@ -19,8 +19,10 @@ public interface MovieService {
 
   MovieDetailsDTO convertToDetailsDTO(Movie movie);
 
-  void updateRating(Movie movie, int rating);
+  void updateRating(Movie movie, Integer rating);
 
   MovieDetailsDTO createMovie(MovieReqDTO reqDTO);
+
+  Movie save(Movie movie);
 
 }
