@@ -10,7 +10,7 @@ public interface RecommendationService {
 
   RecommendationDTO addRecommendation(Viewer viewer, RecommendationDTO recommendationDTO);
 
-  Recommendation save(Viewer viewer, Movie movie, int rating, String recommendationText);
+  Recommendation save(Integer id, Viewer viewer, Movie movie, int rating, String recommendationText);
 
   RecommendationDTO modifyRecommendation(Viewer viewer, int id, RecommendationModDTO modDTO);
 

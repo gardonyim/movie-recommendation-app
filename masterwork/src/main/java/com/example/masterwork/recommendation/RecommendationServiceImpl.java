@@ -33,13 +33,14 @@ public class RecommendationServiceImpl implements RecommendationService {
     }
     Movie movie = movieService.getMovieById(recommendationDTO.getMovieId());
     movieService.updateRating(movie, recommendationDTO.getRating());
-    return new RecommendationDTO(save(viewer, movie, recommendationDTO.getRating(),
+    return new RecommendationDTO(save(null, viewer, movie, recommendationDTO.getRating(),
         recommendationDTO.getRecommendationText()));
   }
 
   @Override
-  public Recommendation save(Viewer viewer, Movie movie, int rating, String recommendationText) {
+  public Recommendation save(Integer id, Viewer viewer, Movie movie, int rating, String recommendationText) {
     return recommendationRepository.save(Recommendation.builder()
+        .id(id)
         .rating(rating)
         .recommendationText(recommendationText)
         .movie(movie)
@@ -59,7 +60,7 @@ public class RecommendationServiceImpl implements RecommendationService {
         .filter(r -> r.getId() != id)
         .collect(Collectors.toList()));
     movieService.updateRating(movie, modDTO.getRating());
-    return new RecommendationDTO(save(viewer, movie, modDTO.getRating(), modDTO.getRecommendationText()));
+    return new RecommendationDTO(save(id, viewer, movie, modDTO.getRating(), modDTO.getRecommendationText()));
   }
 
   private void validateRecommendationMod(Viewer viewer, int id) {
