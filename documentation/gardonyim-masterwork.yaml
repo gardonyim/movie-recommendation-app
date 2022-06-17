@@ -18,6 +18,8 @@ tags:
     description: Auth Controller
   - name: director-controller
     description: Director Controller
+  - name: genre-controller
+    description: Genre Controller
   - name: movie-controller
     description: Movie Controller
   - name: recommendation-controller
@@ -36,6 +38,8 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/ActorDTO'
+              exampleSetFlag: true
+            exampleSetFlag: false
       responses:
         '200':
           description: OK
@@ -43,6 +47,8 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ActorDTO'
+                exampleSetFlag: true
+              exampleSetFlag: false
         '201':
           description: Created
         '401':
@@ -64,6 +70,8 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ActorListDTO'
+                exampleSetFlag: true
+              exampleSetFlag: false
         '401':
           description: Unauthorized
         '403':
@@ -85,6 +93,7 @@ paths:
           schema:
             type: integer
             format: int32
+            exampleSetFlag: true
       responses:
         '200':
           description: OK
@@ -92,6 +101,8 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/MovieListDTO'
+                exampleSetFlag: true
+              exampleSetFlag: false
         '401':
           description: Unauthorized
         '403':
@@ -109,6 +120,8 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/LoginDTO'
+              exampleSetFlag: true
+            exampleSetFlag: false
       responses:
         '200':
           description: OK
@@ -116,6 +129,8 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/TokenDTO'
+                exampleSetFlag: true
+              exampleSetFlag: false
         '201':
           description: Created
         '401':
@@ -135,6 +150,8 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/DirectorDTO'
+              exampleSetFlag: true
+            exampleSetFlag: false
       responses:
         '200':
           description: OK
@@ -142,6 +159,8 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/DirectorDTO'
+                exampleSetFlag: true
+              exampleSetFlag: false
         '201':
           description: Created
         '401':
@@ -163,6 +182,8 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/DirectorListDTO'
+                exampleSetFlag: true
+              exampleSetFlag: false
         '401':
           description: Unauthorized
         '403':
@@ -184,6 +205,7 @@ paths:
           schema:
             type: integer
             format: int32
+            exampleSetFlag: true
       responses:
         '200':
           description: OK
@@ -191,6 +213,59 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/MovieListDTO'
+                exampleSetFlag: true
+              exampleSetFlag: false
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+  /genre:
+    post:
+      tags:
+        - genre-controller
+      summary: addGenre
+      operationId: addGenreUsingPOST
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GenreDTO'
+              exampleSetFlag: true
+            exampleSetFlag: false
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/GenreDTO'
+                exampleSetFlag: true
+              exampleSetFlag: false
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+  /genre/all:
+    get:
+      tags:
+        - genre-controller
+      summary: getGenres
+      operationId: getGenresUsingGET
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/GenreListDTO'
+                exampleSetFlag: true
+              exampleSetFlag: false
         '401':
           description: Unauthorized
         '403':
@@ -211,6 +286,7 @@ paths:
           style: form
           schema:
             type: string
+            exampleSetFlag: true
       responses:
         '200':
           description: OK
@@ -218,6 +294,8 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/MovieDetailsDTO'
+                exampleSetFlag: true
+              exampleSetFlag: false
         '401':
           description: Unauthorized
         '403':
@@ -234,6 +312,8 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/MovieReqDTO'
+              exampleSetFlag: true
+            exampleSetFlag: false
       responses:
         '200':
           description: OK
@@ -241,6 +321,8 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/MovieDetailsDTO'
+                exampleSetFlag: true
+              exampleSetFlag: false
         '201':
           description: Created
         '401':
@@ -264,6 +346,7 @@ paths:
           schema:
             type: integer
             format: int32
+            exampleSetFlag: true
       responses:
         '200':
           description: OK
@@ -271,6 +354,8 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/MovieListDTO'
+                exampleSetFlag: true
+              exampleSetFlag: false
         '401':
           description: Unauthorized
         '403':
@@ -292,6 +377,7 @@ paths:
           schema:
             type: integer
             format: int32
+            exampleSetFlag: true
       responses:
         '200':
           description: OK
@@ -299,6 +385,8 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/MovieDetailsDTO'
+                exampleSetFlag: true
+              exampleSetFlag: false
         '401':
           description: Unauthorized
         '403':
@@ -318,35 +406,42 @@ paths:
           style: form
           schema:
             type: boolean
+            exampleSetFlag: true
         - name: authorities[0].authority
           in: query
           required: false
           style: form
           schema:
             type: string
+            exampleSetFlag: true
         - name: credentials
           in: query
           required: false
           style: form
           schema:
             type: object
+            exampleSetFlag: true
         - name: details
           in: query
           required: false
           style: form
           schema:
             type: object
+            exampleSetFlag: true
         - name: principal
           in: query
           required: false
           style: form
           schema:
             type: object
+            exampleSetFlag: true
       requestBody:
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/RecommendationDTO'
+              exampleSetFlag: true
+            exampleSetFlag: false
       responses:
         '200':
           description: OK
@@ -354,6 +449,8 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/RecommendationDTO'
+                exampleSetFlag: true
+              exampleSetFlag: false
         '201':
           description: Created
         '401':
@@ -375,30 +472,35 @@ paths:
           style: form
           schema:
             type: boolean
+            exampleSetFlag: true
         - name: authorities[0].authority
           in: query
           required: false
           style: form
           schema:
             type: string
+            exampleSetFlag: true
         - name: credentials
           in: query
           required: false
           style: form
           schema:
             type: object
+            exampleSetFlag: true
         - name: details
           in: query
           required: false
           style: form
           schema:
             type: object
+            exampleSetFlag: true
         - name: principal
           in: query
           required: false
           style: form
           schema:
             type: object
+            exampleSetFlag: true
         - name: id
           in: path
           description: id
@@ -407,11 +509,14 @@ paths:
           schema:
             type: integer
             format: int32
+            exampleSetFlag: true
       requestBody:
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/RecommendationModDTO'
+              exampleSetFlag: true
+            exampleSetFlag: false
       responses:
         '200':
           description: OK
@@ -419,6 +524,8 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/RecommendationDTO'
+                exampleSetFlag: true
+              exampleSetFlag: false
         '201':
           description: Created
         '401':
@@ -439,24 +546,28 @@ paths:
           style: form
           schema:
             type: boolean
+            exampleSetFlag: true
         - name: authorities[0].authority
           in: query
           required: false
           style: form
           schema:
             type: string
+            exampleSetFlag: true
         - name: credentials
           in: query
           required: false
           style: form
           schema:
             type: object
+            exampleSetFlag: true
         - name: details
           in: query
           required: false
           style: form
           schema:
             type: object
+            exampleSetFlag: true
         - name: id
           in: path
           description: id
@@ -465,12 +576,14 @@ paths:
           schema:
             type: integer
             format: int32
+            exampleSetFlag: true
         - name: principal
           in: query
           required: false
           style: form
           schema:
             type: object
+            exampleSetFlag: true
       responses:
         '200':
           description: OK
@@ -478,6 +591,8 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/DeleteDTO'
+                exampleSetFlag: true
+              exampleSetFlag: false
         '204':
           description: No Content
         '401':
@@ -495,6 +610,8 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/RegistrationReqDTO'
+              exampleSetFlag: true
+            exampleSetFlag: false
       responses:
         '200':
           description: OK
@@ -502,6 +619,8 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/RegistrationResDTO'
+                exampleSetFlag: true
+              exampleSetFlag: false
         '201':
           description: Created
         '401':
@@ -521,16 +640,22 @@ components:
         id:
           type: integer
           format: int32
+          exampleSetFlag: true
         name:
           type: string
+          exampleSetFlag: true
+      exampleSetFlag: true
     ActorListDTO:
       title: ActorListDTO
       type: object
       properties:
         actors:
           type: array
+          exampleSetFlag: true
           items:
             $ref: '#/components/schemas/ActorDTO'
+            exampleSetFlag: false
+      exampleSetFlag: true
     DeleteDTO:
       title: DeleteDTO
       type: object
@@ -538,8 +663,11 @@ components:
         id:
           type: integer
           format: int32
+          exampleSetFlag: true
         status:
           type: string
+          exampleSetFlag: true
+      exampleSetFlag: true
     DirectorDTO:
       title: DirectorDTO
       required:
@@ -549,16 +677,47 @@ components:
         id:
           type: integer
           format: int32
+          exampleSetFlag: true
         name:
           type: string
+          exampleSetFlag: true
+      exampleSetFlag: true
     DirectorListDTO:
       title: DirectorListDTO
       type: object
       properties:
         directors:
           type: array
+          exampleSetFlag: true
           items:
             $ref: '#/components/schemas/DirectorDTO'
+            exampleSetFlag: false
+      exampleSetFlag: true
+    GenreDTO:
+      title: GenreDTO
+      required:
+        - type
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+          exampleSetFlag: true
+        type:
+          type: string
+          exampleSetFlag: true
+      exampleSetFlag: true
+    GenreListDTO:
+      title: GenreListDTO
+      type: object
+      properties:
+        genres:
+          type: array
+          exampleSetFlag: true
+          items:
+            $ref: '#/components/schemas/GenreDTO'
+            exampleSetFlag: false
+      exampleSetFlag: true
     LoginDTO:
       title: LoginDTO
       required:
@@ -568,8 +727,11 @@ components:
       properties:
         password:
           type: string
+          exampleSetFlag: true
         username:
           type: string
+          exampleSetFlag: true
+      exampleSetFlag: true
     MovieDTO:
       title: MovieDTO
       type: object
@@ -577,11 +739,15 @@ components:
         averageRating:
           type: number
           format: double
+          exampleSetFlag: true
         id:
           type: integer
           format: int32
+          exampleSetFlag: true
         title:
           type: string
+          exampleSetFlag: true
+      exampleSetFlag: true
     MovieDetailsDTO:
       title: MovieDetailsDTO
       type: object
@@ -589,37 +755,52 @@ components:
         averageRating:
           type: number
           format: double
+          exampleSetFlag: true
         cast:
           type: array
+          exampleSetFlag: true
           items:
             $ref: '#/components/schemas/ActorDTO'
+            exampleSetFlag: false
         director:
           type: string
+          exampleSetFlag: true
         genre:
           type: string
+          exampleSetFlag: true
         id:
           type: integer
           format: int32
+          exampleSetFlag: true
         length:
           type: integer
           format: int32
+          exampleSetFlag: true
         recommendations:
           type: array
+          exampleSetFlag: true
           items:
             $ref: '#/components/schemas/RecommendationListItemDTO'
+            exampleSetFlag: false
         releaseYear:
           type: integer
           format: int32
+          exampleSetFlag: true
         title:
           type: string
+          exampleSetFlag: true
+      exampleSetFlag: true
     MovieListDTO:
       title: MovieListDTO
       type: object
       properties:
         movies:
           type: array
+          exampleSetFlag: true
           items:
             $ref: '#/components/schemas/MovieDTO'
+            exampleSetFlag: false
+      exampleSetFlag: true
     MovieReqDTO:
       title: MovieReqDTO
       required:
@@ -630,23 +811,31 @@ components:
       properties:
         actorIdList:
           type: array
+          exampleSetFlag: true
           items:
             type: integer
             format: int32
+            exampleSetFlag: false
         directorId:
           type: integer
           format: int32
+          exampleSetFlag: true
         genreId:
           type: integer
           format: int32
+          exampleSetFlag: true
         length:
           type: integer
           format: int32
+          exampleSetFlag: true
         releaseYear:
           type: integer
           format: int32
+          exampleSetFlag: true
         title:
           type: string
+          exampleSetFlag: true
+      exampleSetFlag: true
     RecommendationDTO:
       title: RecommendationDTO
       required:
@@ -657,14 +846,19 @@ components:
         id:
           type: integer
           format: int32
+          exampleSetFlag: true
         movieId:
           type: integer
           format: int32
+          exampleSetFlag: true
         rating:
           type: integer
           format: int32
+          exampleSetFlag: true
         recommendationText:
           type: string
+          exampleSetFlag: true
+      exampleSetFlag: true
     RecommendationListItemDTO:
       title: RecommendationListItemDTO
       type: object
@@ -672,11 +866,15 @@ components:
         id:
           type: integer
           format: int32
+          exampleSetFlag: true
         rating:
           type: integer
           format: int32
+          exampleSetFlag: true
         recommendationText:
           type: string
+          exampleSetFlag: true
+      exampleSetFlag: true
     RecommendationModDTO:
       title: RecommendationModDTO
       required:
@@ -686,8 +884,11 @@ components:
         rating:
           type: integer
           format: int32
+          exampleSetFlag: true
         recommendationText:
           type: string
+          exampleSetFlag: true
+      exampleSetFlag: true
     RegistrationReqDTO:
       title: RegistrationReqDTO
       required:
@@ -698,12 +899,16 @@ components:
       properties:
         email:
           type: string
+          exampleSetFlag: true
         password:
           maxLength: 2147483647
           minLength: 8
           type: string
+          exampleSetFlag: true
         username:
           type: string
+          exampleSetFlag: true
+      exampleSetFlag: true
     RegistrationResDTO:
       title: RegistrationResDTO
       type: object
@@ -711,13 +916,19 @@ components:
         id:
           type: integer
           format: int32
+          exampleSetFlag: true
         username:
           type: string
+          exampleSetFlag: true
+      exampleSetFlag: true
     TokenDTO:
       title: TokenDTO
       type: object
       properties:
         status:
           type: string
+          exampleSetFlag: true
         token:
           type: string
+          exampleSetFlag: true
+      exampleSetFlag: true
