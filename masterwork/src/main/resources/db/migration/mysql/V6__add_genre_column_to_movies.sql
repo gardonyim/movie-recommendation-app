@@ -1,1 +1,0 @@
-ALTER TABLE movies ADD COLUMN genre VARCHAR(20);

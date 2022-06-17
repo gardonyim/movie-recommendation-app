@@ -53,7 +53,7 @@ public class AuthServiceImpl implements AuthService {
   private String generateJwtString(Viewer viewer) {
     SecretKey key = Keys.hmacShaKeyFor(jwtKey.getBytes(StandardCharsets.UTF_8));
     return Jwts.builder()
-        .setSubject("CH4")
+        .setSubject("masterwork")
         .claim("username", viewer.getUsername())
         .setIssuedAt(Date.from(Instant.now()))
         .setExpiration(Date.from(Instant.now().plus(1, ChronoUnit.HOURS)))
