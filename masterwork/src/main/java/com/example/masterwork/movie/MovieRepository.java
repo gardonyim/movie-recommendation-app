@@ -8,6 +8,7 @@ import java.util.Optional;
 
 public interface MovieRepository extends CrudRepository<Movie, Integer> {
 
+  @Override
   List<Movie> findAll();
 
   Optional<Movie> findMovieByTitle(String title);

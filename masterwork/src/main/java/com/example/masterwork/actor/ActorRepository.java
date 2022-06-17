@@ -8,6 +8,7 @@ import java.util.Optional;
 
 public interface ActorRepository extends CrudRepository<Actor, Integer> {
 
+  @Override
   List<Actor> findAll();
 
   Optional<Actor> findActorByName(String name);
