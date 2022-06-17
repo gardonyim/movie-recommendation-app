@@ -82,7 +82,7 @@ public class RecommendationControllerIntegrationTest {
   public void test_postRecommendationNoMovieId_should_respondBadRequestStatusAndErrorMessage() throws Exception {
     RecommendationDTO request = new RecommendationDTO();
     request.setRating(5);
-    Viewer viewer = testViewerBuilder().recommendations(new ArrayList<>()).build();
+    Viewer viewer = testViewerBuilder().recommendations(Collections.emptyList()).build();
     Authentication auth = new UsernamePasswordAuthenticationToken(viewer, null, null);
     ErrorDTO expected = new ErrorDTO("Movie id is required");
 
@@ -95,7 +95,41 @@ public class RecommendationControllerIntegrationTest {
   }
 
   @Test
-  public void test_postRecommendationInvalidMovieId_should_respondBadRequestStatusAndErrorMessage() throws Exception {
+  public void test_postRecommendationRatingBelow1_should_respondBadRequestStatusAndErrorMessage() throws Exception {
+    RecommendationDTO request = new RecommendationDTO();
+    request.setRating(0);
+    request.setMovieId(113);
+    Viewer viewer = testViewerBuilder().recommendations(Collections.emptyList()).build();
+    Authentication auth = new UsernamePasswordAuthenticationToken(viewer, null, null);
+    ErrorDTO expected = new ErrorDTO("Lowest rating is 1");
+
+    mockMvc.perform(MockMvcRequestBuilders.post("/recommendation")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(gson.toJson(request))
+            .principal(auth))
+        .andExpect(status().isBadRequest())
+        .andExpect(content().json(gson.toJson(expected)));
+  }
+
+  @Test
+  public void test_postRecommendationRatingAbove10_should_respondBadRequestStatusAndErrorMessage() throws Exception {
+    RecommendationDTO request = new RecommendationDTO();
+    request.setRating(11);
+    request.setMovieId(113);
+    Viewer viewer = testViewerBuilder().recommendations(Collections.emptyList()).build();
+    Authentication auth = new UsernamePasswordAuthenticationToken(viewer, null, null);
+    ErrorDTO expected = new ErrorDTO("Highest rating is 10");
+
+    mockMvc.perform(MockMvcRequestBuilders.post("/recommendation")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(gson.toJson(request))
+            .principal(auth))
+        .andExpect(status().isBadRequest())
+        .andExpect(content().json(gson.toJson(expected)));
+  }
+
+  @Test
+  public void test_postRecommendationInvalidMovieId_should_respondNotFoundStatusAndErrorMessage() throws Exception {
     RecommendationDTO request = new RecommendationDTO();
     request.setRating(5);
     request.setMovieId(0);
@@ -112,7 +146,7 @@ public class RecommendationControllerIntegrationTest {
   }
 
   @Test
-  public void test_postExistingRecommendation_should_respondBadRequestStatusAndErrorMessage() throws Exception {
+  public void test_postExistingRecommendation_should_respondConflictStatusAndErrorMessage() throws Exception {
     RecommendationDTO request = new RecommendationDTO();
     request.setRating(5);
     request.setMovieId(111);

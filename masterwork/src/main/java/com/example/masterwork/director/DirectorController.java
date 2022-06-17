@@ -3,7 +3,6 @@ package com.example.masterwork.director;
 import com.example.masterwork.director.models.DirectorDTO;
 import com.example.masterwork.director.models.DirectorListDTO;
 import com.example.masterwork.movie.models.MovieListDTO;
-import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
