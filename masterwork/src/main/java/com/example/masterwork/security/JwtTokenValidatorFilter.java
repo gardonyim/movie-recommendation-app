@@ -3,16 +3,16 @@ package com.example.masterwork.security;
 import com.example.masterwork.exception.exceptions.InvalidCredentialsException;
 import com.example.masterwork.viewer.ViewerService;
 import com.example.masterwork.viewer.model.Viewer;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
-import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.security.Keys;
+
 import javax.crypto.SecretKey;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -48,8 +48,9 @@ public class JwtTokenValidatorFilter extends OncePerRequestFilter {
     }
     String token = request.getHeader("Authorization");
     if (token == null || token.isEmpty()) {
-      throw new AuthenticationCredentialsNotFoundException("No authentication token is provided!");
-    } //TODO: fix no token case
+      filterChain.doFilter(request, response);
+      return;
+    }
     String jwt = token.substring(7).trim();
 
     SecretKey key = Keys.hmacShaKeyFor(

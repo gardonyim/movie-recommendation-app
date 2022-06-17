@@ -27,7 +27,7 @@ public class ViewerServiceImpl implements ViewerService {
   public RegistrationResDTO createViewer(RegistrationReqDTO reqDTO) {
     validateRegistration(reqDTO);
     Viewer viewer = convert(reqDTO);
-    viewer.setEnabled(false);
+    viewer.setEnabled(true);
     viewer.setActivation(generateKey());
     viewer = viewerRepository.save(viewer);
     return new RegistrationResDTO(viewer);

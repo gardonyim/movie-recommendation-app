@@ -1,1 +1,0 @@
-ALTER TABLE recommendations MODIFY recommendation_text VARCHAR(500);

@@ -1,6 +1,6 @@
 CREATE TABLE IF NOT EXISTS recommendations (
     id INT NOT NULL AUTO_INCREMENT,
-    recommendation_text TEXT,
+    recommendation_text VARCHAR(500),
     rating INT,
     movie_id INT,
     viewer_id INT,

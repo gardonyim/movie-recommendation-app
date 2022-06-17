@@ -12,9 +12,10 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
   public static final String[] PRIVATE_ENDPOINTS = {
-      "/movie/**",
-      "/director/**",
       "/actor/**",
+      "/director/**",
+      "/genre/**",
+      "/movie/**",
       "/recommendation/**"
   };
   private ViewerService viewerService;

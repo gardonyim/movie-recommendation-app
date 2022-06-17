@@ -5,6 +5,7 @@ CREATE TABLE IF NOT EXISTS movies (
     length INT,
     average_rating FLOAT,
     director_id INT,
+    genre_id INT,
     PRIMARY KEY (id),
     FOREIGN KEY (director_id) REFERENCES directors(id)
 )
