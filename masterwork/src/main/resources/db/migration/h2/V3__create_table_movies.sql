@@ -8,4 +8,4 @@ CREATE TABLE IF NOT EXISTS movies (
     genre_id INT,
     PRIMARY KEY (id),
     FOREIGN KEY (director_id) REFERENCES directors(id)
-)
+);

@@ -1,0 +1,723 @@
+openapi: 3.0.3
+info:
+  title: Api Documentation
+  description: Api Documentation
+  termsOfService: urn:tos
+  contact: {}
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0
+  version: '1.0'
+servers:
+  - url: http://localhost:8080
+    description: Inferred Url
+tags:
+  - name: actor-controller
+    description: Actor Controller
+  - name: auth-controller
+    description: Auth Controller
+  - name: director-controller
+    description: Director Controller
+  - name: movie-controller
+    description: Movie Controller
+  - name: recommendation-controller
+    description: Recommendation Controller
+  - name: viewer-controller
+    description: Viewer Controller
+paths:
+  /actor:
+    post:
+      tags:
+        - actor-controller
+      summary: addActor
+      operationId: addActorUsingPOST
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ActorDTO'
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ActorDTO'
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+  /actor/all:
+    get:
+      tags:
+        - actor-controller
+      summary: getAllActors
+      operationId: getAllActorsUsingGET
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ActorListDTO'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+  /actor/{id}/movies:
+    get:
+      tags:
+        - actor-controller
+      summary: moviesByActor
+      operationId: moviesByActorUsingGET
+      parameters:
+        - name: id
+          in: path
+          description: id
+          required: true
+          style: simple
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/MovieListDTO'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+  /login:
+    post:
+      tags:
+        - auth-controller
+      summary: handleLogin
+      operationId: handleLoginUsingPOST
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginDTO'
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/TokenDTO'
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+  /director:
+    post:
+      tags:
+        - director-controller
+      summary: addDirector
+      operationId: addDirectorUsingPOST
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DirectorDTO'
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/DirectorDTO'
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+  /director/all:
+    get:
+      tags:
+        - director-controller
+      summary: getDirectors
+      operationId: getDirectorsUsingGET
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/DirectorListDTO'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+  /director/{id}/movies:
+    get:
+      tags:
+        - director-controller
+      summary: moviesByDirector
+      operationId: moviesByDirectorUsingGET
+      parameters:
+        - name: id
+          in: path
+          description: id
+          required: true
+          style: simple
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/MovieListDTO'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+  /movie:
+    get:
+      tags:
+        - movie-controller
+      summary: getMovieByTitle
+      operationId: getMovieByTitleUsingGET
+      parameters:
+        - name: title
+          in: query
+          description: title
+          required: false
+          style: form
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/MovieDetailsDTO'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+    post:
+      tags:
+        - movie-controller
+      summary: addMovie
+      operationId: addMovieUsingPOST
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MovieReqDTO'
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/MovieDetailsDTO'
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+  /movie/topRated:
+    get:
+      tags:
+        - movie-controller
+      summary: getTopRatedMovies
+      operationId: getTopRatedMoviesUsingGET
+      parameters:
+        - name: limit
+          in: query
+          description: limit
+          required: false
+          style: form
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/MovieListDTO'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+  /movie/{id}:
+    get:
+      tags:
+        - movie-controller
+      summary: getMoviById
+      operationId: getMoviByIdUsingGET
+      parameters:
+        - name: id
+          in: path
+          description: id
+          required: true
+          style: simple
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/MovieDetailsDTO'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+  /recommendation:
+    post:
+      tags:
+        - recommendation-controller
+      summary: addRecommendation
+      operationId: addRecommendationUsingPOST
+      parameters:
+        - name: authenticated
+          in: query
+          required: false
+          style: form
+          schema:
+            type: boolean
+        - name: authorities[0].authority
+          in: query
+          required: false
+          style: form
+          schema:
+            type: string
+        - name: credentials
+          in: query
+          required: false
+          style: form
+          schema:
+            type: object
+        - name: details
+          in: query
+          required: false
+          style: form
+          schema:
+            type: object
+        - name: principal
+          in: query
+          required: false
+          style: form
+          schema:
+            type: object
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RecommendationDTO'
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/RecommendationDTO'
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+  /recommendation/{id}:
+    put:
+      tags:
+        - recommendation-controller
+      summary: modifyRecommendation
+      operationId: modifyRecommendationUsingPUT
+      parameters:
+        - name: authenticated
+          in: query
+          required: false
+          style: form
+          schema:
+            type: boolean
+        - name: authorities[0].authority
+          in: query
+          required: false
+          style: form
+          schema:
+            type: string
+        - name: credentials
+          in: query
+          required: false
+          style: form
+          schema:
+            type: object
+        - name: details
+          in: query
+          required: false
+          style: form
+          schema:
+            type: object
+        - name: principal
+          in: query
+          required: false
+          style: form
+          schema:
+            type: object
+        - name: id
+          in: path
+          description: id
+          required: true
+          style: simple
+          schema:
+            type: integer
+            format: int32
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RecommendationModDTO'
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/RecommendationDTO'
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+    delete:
+      tags:
+        - recommendation-controller
+      summary: deleteRecommendation
+      operationId: deleteRecommendationUsingDELETE
+      parameters:
+        - name: authenticated
+          in: query
+          required: false
+          style: form
+          schema:
+            type: boolean
+        - name: authorities[0].authority
+          in: query
+          required: false
+          style: form
+          schema:
+            type: string
+        - name: credentials
+          in: query
+          required: false
+          style: form
+          schema:
+            type: object
+        - name: details
+          in: query
+          required: false
+          style: form
+          schema:
+            type: object
+        - name: id
+          in: path
+          description: id
+          required: true
+          style: simple
+          schema:
+            type: integer
+            format: int32
+        - name: principal
+          in: query
+          required: false
+          style: form
+          schema:
+            type: object
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/DeleteDTO'
+        '204':
+          description: No Content
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+  /register:
+    post:
+      tags:
+        - viewer-controller
+      summary: createViewer
+      operationId: createViewerUsingPOST
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegistrationReqDTO'
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/RegistrationResDTO'
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+components:
+  schemas:
+    ActorDTO:
+      title: ActorDTO
+      required:
+        - name
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        name:
+          type: string
+    ActorListDTO:
+      title: ActorListDTO
+      type: object
+      properties:
+        actors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ActorDTO'
+    DeleteDTO:
+      title: DeleteDTO
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        status:
+          type: string
+    DirectorDTO:
+      title: DirectorDTO
+      required:
+        - name
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        name:
+          type: string
+    DirectorListDTO:
+      title: DirectorListDTO
+      type: object
+      properties:
+        directors:
+          type: array
+          items:
+            $ref: '#/components/schemas/DirectorDTO'
+    LoginDTO:
+      title: LoginDTO
+      required:
+        - password
+        - username
+      type: object
+      properties:
+        password:
+          type: string
+        username:
+          type: string
+    MovieDTO:
+      title: MovieDTO
+      type: object
+      properties:
+        averageRating:
+          type: number
+          format: double
+        id:
+          type: integer
+          format: int32
+        title:
+          type: string
+    MovieDetailsDTO:
+      title: MovieDetailsDTO
+      type: object
+      properties:
+        averageRating:
+          type: number
+          format: double
+        cast:
+          type: array
+          items:
+            $ref: '#/components/schemas/ActorDTO'
+        director:
+          type: string
+        genre:
+          type: string
+        id:
+          type: integer
+          format: int32
+        length:
+          type: integer
+          format: int32
+        recommendations:
+          type: array
+          items:
+            $ref: '#/components/schemas/RecommendationListItemDTO'
+        releaseYear:
+          type: integer
+          format: int32
+        title:
+          type: string
+    MovieListDTO:
+      title: MovieListDTO
+      type: object
+      properties:
+        movies:
+          type: array
+          items:
+            $ref: '#/components/schemas/MovieDTO'
+    MovieReqDTO:
+      title: MovieReqDTO
+      required:
+        - actorIdList
+        - directorId
+        - title
+      type: object
+      properties:
+        actorIdList:
+          type: array
+          items:
+            type: integer
+            format: int32
+        directorId:
+          type: integer
+          format: int32
+        genreId:
+          type: integer
+          format: int32
+        length:
+          type: integer
+          format: int32
+        releaseYear:
+          type: integer
+          format: int32
+        title:
+          type: string
+    RecommendationDTO:
+      title: RecommendationDTO
+      required:
+        - movieId
+        - rating
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        movieId:
+          type: integer
+          format: int32
+        rating:
+          type: integer
+          format: int32
+        recommendationText:
+          type: string
+    RecommendationListItemDTO:
+      title: RecommendationListItemDTO
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        rating:
+          type: integer
+          format: int32
+        recommendationText:
+          type: string
+    RecommendationModDTO:
+      title: RecommendationModDTO
+      required:
+        - rating
+      type: object
+      properties:
+        rating:
+          type: integer
+          format: int32
+        recommendationText:
+          type: string
+    RegistrationReqDTO:
+      title: RegistrationReqDTO
+      required:
+        - email
+        - password
+        - username
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          maxLength: 2147483647
+          minLength: 8
+          type: string
+        username:
+          type: string
+    RegistrationResDTO:
+      title: RegistrationResDTO
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        username:
+          type: string
+    TokenDTO:
+      title: TokenDTO
+      type: object
+      properties:
+        status:
+          type: string
+        token:
+          type: string
