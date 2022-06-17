@@ -8,6 +8,7 @@ import java.util.Optional;
 
 public interface DirectorRepository extends CrudRepository<Director, Integer> {
 
+  @Override
   List<Director> findAll();
 
   Optional<Director> findFirstByName(String name);

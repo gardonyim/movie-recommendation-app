@@ -1,4 +1,6 @@
 .env
+.gitignore
+
 HELP.md
 .gradle
 build/
