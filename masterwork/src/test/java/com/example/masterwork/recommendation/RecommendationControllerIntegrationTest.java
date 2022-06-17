@@ -4,10 +4,8 @@ import com.example.masterwork.TestNoSecurityConfig;
 import com.example.masterwork.exception.model.ErrorDTO;
 import com.example.masterwork.recommendation.models.RecommendationDTO;
 import com.example.masterwork.recommendation.models.RecommendationModDTO;
-import com.example.masterwork.utilities.DeleteDTO;
 import com.example.masterwork.viewer.model.Viewer;
 import com.google.gson.Gson;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -24,7 +22,6 @@ import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import static com.example.masterwork.TestUtils.defaultRecommendation;
 import static com.example.masterwork.TestUtils.testMovieBuilder;
 import static com.example.masterwork.TestUtils.testRecommendationBuilder;
 import static com.example.masterwork.TestUtils.testViewerBuilder;
@@ -43,24 +40,6 @@ public class RecommendationControllerIntegrationTest {
   @Autowired
   MockMvc mockMvc;
   Gson gson = new Gson();
-
-  @Disabled
-  @Test
-  public void test_postRecommendationValidRequest_should_respondCreatedStatusAndProperJson() throws Exception {
-    RecommendationDTO request = new RecommendationDTO(testRecommendationBuilder()
-        .id(null)
-        .movie(testMovieBuilder().id(111).build())
-        .build());
-    Viewer viewer = testViewerBuilder().recommendations(new ArrayList<>()).build();
-    Authentication auth = new UsernamePasswordAuthenticationToken(viewer, null, null);
-
-    mockMvc.perform(MockMvcRequestBuilders.post("/recommendation")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(gson.toJson(request))
-            .principal(auth))
-        .andExpect(status().isCreated())
-        .andExpect(jsonPath("$.id").isNumber());
-  }
 
   @Test
   public void test_postRecommendationNoRating_should_respondBadRequestStatusAndErrorMessage() throws Exception {
@@ -267,23 +246,6 @@ public class RecommendationControllerIntegrationTest {
             .content(gson.toJson(request))
             .principal(auth))
         .andExpect(status().isForbidden())
-        .andExpect(content().json(gson.toJson(expected)));
-  }
-
-  @Disabled
-  @Test
-  public void test_deleteOwnRecommendation_should_respondOkStatusAndProperJson() throws Exception {
-    Viewer viewer = testViewerBuilder().id(111)
-        .recommendations(Collections.singletonList(testRecommendationBuilder().id(113)
-            .movie(testMovieBuilder().recommendations(Collections.singletonList(defaultRecommendation())).build())
-            .build()))
-        .build();
-    Authentication auth = new UsernamePasswordAuthenticationToken(viewer, null, null);
-    DeleteDTO expected = new DeleteDTO(113);
-
-    mockMvc.perform(MockMvcRequestBuilders.delete("/recommendation/113")
-            .principal(auth))
-        .andExpect(status().isOk())
         .andExpect(content().json(gson.toJson(expected)));
   }
 
