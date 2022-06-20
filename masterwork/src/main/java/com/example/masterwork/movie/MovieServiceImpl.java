@@ -11,6 +11,7 @@ import com.example.masterwork.movie.models.MovieDTO;
 import com.example.masterwork.movie.models.MovieDetailsDTO;
 import com.example.masterwork.movie.models.MovieListDTO;
 import com.example.masterwork.movie.models.MovieReqDTO;
+import com.example.masterwork.recommendation.models.Recommendation;
 import com.example.masterwork.recommendation.models.RecommendationListItemDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -92,7 +93,7 @@ public class MovieServiceImpl implements MovieService {
   @Override
   public void updateRating(Movie movie, Integer rating) {
     IntStream ratings = movie.getRecommendations().stream()
-            .mapToInt(r -> r.getRating());
+            .mapToInt(Recommendation::getRating);
     movie.setAverageRating(IntStream.concat(ratings, IntStream.of(rating))
         .average()
         .orElseGet(null));

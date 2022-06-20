@@ -12,6 +12,7 @@ import com.example.masterwork.viewer.model.Viewer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -29,7 +30,7 @@ public class RecommendationServiceImpl implements RecommendationService {
   @Override
   public RecommendationDTO addRecommendation(Viewer viewer, RecommendationDTO recommendationDTO) {
     if (viewer.getRecommendations().stream()
-        .anyMatch(r -> r.getMovie().getId() == recommendationDTO.getMovieId())) {
+        .anyMatch(r -> Objects.equals(r.getMovie().getId(), recommendationDTO.getMovieId()))) {
       throw new RequestCauseConflictException("Recommendation already exists");
     }
     Movie movie = movieService.getMovieById(recommendationDTO.getMovieId());
@@ -71,7 +72,7 @@ public class RecommendationServiceImpl implements RecommendationService {
         .filter(r -> r.getId() != id)
         .collect(Collectors.toList()));
     movie.setAverageRating(movie.getRecommendations().stream()
-        .mapToInt(r -> r.getRating())
+        .mapToInt(Recommendation::getRating)
         .average()
         .orElseGet(null));
     movieService.save(movie);
