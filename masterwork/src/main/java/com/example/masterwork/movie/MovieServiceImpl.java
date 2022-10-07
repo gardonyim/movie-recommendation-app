@@ -61,8 +61,13 @@ public class MovieServiceImpl implements MovieService {
   }
 
   @Override
-  public MovieDetailsDTO fetchMovieByTitle(String title) {
-    return convertToDetailsDTO(getMovieByTitle(title));
+  public MovieListDTO fetchMovieByTitle(String title, Integer limit) {
+    limit = limit == null || limit <= 0 ? Integer.parseInt(defaultLimit) : limit;
+    return new MovieListDTO(movieRepository.findMovieByTitleContainingIgnoreCase(title).stream()
+            .map(MovieDTO::new)
+            .sorted((m1, m2) -> m2.getAverageRating() == null ? -1 : m2.getAverageRating().compareTo(m1.getAverageRating()))
+            .limit(limit)
+            .collect(Collectors.toList()));
   }
 
   @Override

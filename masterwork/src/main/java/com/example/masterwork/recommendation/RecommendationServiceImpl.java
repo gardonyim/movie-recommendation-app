@@ -54,7 +54,7 @@ public class RecommendationServiceImpl implements RecommendationService {
     Recommendation recommendation = getRecommendationOwnedByViewer(viewer, id);
     Movie movie = movieService.getMovieById(recommendation.getId());
     movie.setRecommendations(movie.getRecommendations().stream()
-        .filter(r -> r.getId() != id)
+        .filter(r -> !r.getId().equals(id))
         .collect(Collectors.toList()));
     movieService.updateRating(movie, modDTO.getRating());
     return new RecommendationDTO(save(id, viewer, movie, modDTO.getRating(), modDTO.getRecommendationText()));
@@ -68,10 +68,10 @@ public class RecommendationServiceImpl implements RecommendationService {
         .filter(r -> !r.equals(recommendation))
         .collect(Collectors.toList()));
     viewer.setRecommendations(viewer.getRecommendations().stream()
-        .filter(r -> r.getId() != id)
+        .filter(r -> !r.getId().equals(id))
         .collect(Collectors.toList()));
     movie.setAverageRating(movie.getRecommendations().stream()
-        .mapToInt(r -> r.getRating())
+        .mapToInt(Recommendation::getRating)
         .average()
         .orElseGet(null));
     movieService.save(movie);

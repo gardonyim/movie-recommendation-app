@@ -35,8 +35,8 @@ public class MovieController {
   }
 
   @GetMapping("/movie")
-  public ResponseEntity<MovieDetailsDTO> getMovieByTitle(@RequestParam(required = false) String title) {
-    return ResponseEntity.ok(movieService.fetchMovieByTitle(title));
+  public ResponseEntity<MovieListDTO> getMovieByTitle(@RequestParam(required = false) String title, Integer limit) {
+    return ResponseEntity.ok(movieService.fetchMovieByTitle(title, limit));
   }
 
   @PostMapping("/movie")

@@ -13,7 +13,7 @@ public interface MovieService {
 
   Movie getMovieById(int id);
 
-  MovieDetailsDTO fetchMovieByTitle(String title);
+  MovieListDTO fetchMovieByTitle(String title, Integer limit);
 
   Movie getMovieByTitle(String title);
 
