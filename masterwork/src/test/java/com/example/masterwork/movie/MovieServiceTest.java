@@ -128,26 +128,58 @@ public class MovieServiceTest {
   }
 
   @Test
-  public void when_getMovieByValidTitle_should_returnMovie() {
-    Movie expected = defaultMovie();
-    when(movieRepository.findMovieByTitle(anyString())).thenReturn(Optional.of(expected));
+  public void when_getMovieByValidTitleNoLimit_should_returnProperListOfDefaultLimitMovies() {
+    int expectedLimit = 10;
+    List<Movie> movies = new ArrayList<>();
+    for (double i = 1; i < 19; i++) {
+      movies.add(testMovieBuilder().averageRating(i / 2 + 1).build());
+    }
+    when(movieRepository.findMovieByTitleContainingIgnoreCase("test")).thenReturn(movies);
 
-    Movie actual = movieService.getMovieByTitle("test title");
+    MovieListDTO actual = movieService.fetchMovieByTitle("test", null);
 
-    assertEquals(expected, actual);
+    assertEquals(expectedLimit, actual.getMovies().size());
   }
 
   @Test
-  public void when_getMovieByInvalidTitle_shouldThrowException() {
-    when(movieRepository.findMovieByTitle(anyString())).thenReturn(Optional.empty());
+  public void when_getMovieByValidTitleZeroLimit_should_returnProperListOfDefaultLimitMovies() {
+    int expectedLimit = 10;
+    List<Movie> movies = new ArrayList<>();
+    for (double i = 1; i < 19; i++) {
+      movies.add(testMovieBuilder().averageRating(i / 2 + 1).build());
+    }
+    when(movieRepository.findMovieByTitleContainingIgnoreCase("test")).thenReturn(movies);
+
+    MovieListDTO actual = movieService.fetchMovieByTitle("test", 0);
+
+    assertEquals(expectedLimit, actual.getMovies().size());
+  }
+
+  @Test
+  public void when_getMovieByValidTitleWithLimit_should_returnProperListOfLimitNumberOfMovies() {
+    int expectedLimit = 5;
+    List<Movie> movies = new ArrayList<>();
+    for (double i = 1; i < 19; i++) {
+      movies.add(testMovieBuilder().averageRating(i / 2 + 1).build());
+    }
+    when(movieRepository.findMovieByTitleContainingIgnoreCase("test")).thenReturn(movies);
+
+    MovieListDTO actual = movieService.fetchMovieByTitle("test", expectedLimit);
+
+    assertEquals(expectedLimit, actual.getMovies().size());
+  }
+
+  @Test
+  public void when_getMovieByInvalidTitle_should_throwException() {
+    when(movieRepository.findMovieByTitleContainingIgnoreCase("invalid query")).thenReturn(new ArrayList<>());
 
     assertThrows(MovieNotFoundException.class, () -> {
-      movieService.getMovieByTitle("nonexisting movie");
+      movieService.fetchMovieByTitle("invalid query", 10);
     });
   }
 
   @Test
-  public void when_convertToDetailsDTO_shouldReturnValidDTO() {
+  public void when_convertToDetailsDTO_should_ReturnValidDTO() {
     Actor actor = defaultActor();
     Recommendation recommendation = defaultRecommendation();
     Movie movie = testMovieBuilder().cast(Collections.singletonList(actor)).recommendations(Collections.singletonList(recommendation)).build();

@@ -18,6 +18,7 @@ import javax.transaction.Transactional;
 
 import static com.example.masterwork.TestUtils.defaultReqDTO;
 import static com.example.masterwork.TestUtils.testReqDtoBuilder;
+import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -87,18 +88,11 @@ public class MovieControllerIntegrationTest {
   public void test_getMovieByValidTitle_should_respondOkStatusAndProperJson() throws Exception {
     mockMvc.perform(MockMvcRequestBuilders.get("/movie?title=testmovie"))
         .andExpect(status().isOk())
-        .andExpect(jsonPath("$.id", is(111)))
-        .andExpect(jsonPath("$.title", is("testmovie")))
-        .andExpect(jsonPath("$.director", is("testdirector")))
-        .andExpect(jsonPath("$.cast[0].id", is(111)))
-        .andExpect(jsonPath("$.cast[0].name", is("testactor")))
-        .andExpect(jsonPath("$.genre", is("testgenre")))
-        .andExpect(jsonPath("$.releaseYear", is(2022)))
-        .andExpect(jsonPath("$.length", is(90)))
-        .andExpect(jsonPath("$.averageRating", is(5.0)))
-        .andExpect(jsonPath("$.recommendations[0].id", is(111)))
-        .andExpect(jsonPath("$.recommendations[0].rating", is(5)))
-        .andExpect(jsonPath("$.recommendations[0].recommendationText", is("test")));
+        .andExpect(jsonPath("$.movies").isArray())
+        .andExpect(jsonPath("$.movies", hasSize(2)))
+        .andExpect(jsonPath("$.movies[0].id").isNumber())
+        .andExpect(jsonPath("$.movies[0].title").isString())
+        .andExpect(jsonPath("$.movies[0].averageRating").isNumber());
   }
 
   @Test

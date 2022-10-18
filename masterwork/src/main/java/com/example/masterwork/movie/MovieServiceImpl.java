@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -43,11 +44,7 @@ public class MovieServiceImpl implements MovieService {
   @Override
   public MovieListDTO fetchTopRated(Integer limit) {
     limit = limit == null || limit <= 0 ? Integer.parseInt(defaultLimit) : limit;
-    return new MovieListDTO(movieRepository.findAll().stream()
-        .map(MovieDTO::new)
-        .sorted((m1, m2) -> m2.getAverageRating() == null ? -1 : m2.getAverageRating().compareTo(m1.getAverageRating()))
-        .limit(limit)
-        .collect(Collectors.toList()));
+    return convertListToDTO(movieRepository.findAll(), limit);
   }
 
   @Override
@@ -63,16 +60,20 @@ public class MovieServiceImpl implements MovieService {
   @Override
   public MovieListDTO fetchMovieByTitle(String title, Integer limit) {
     limit = limit == null || limit <= 0 ? Integer.parseInt(defaultLimit) : limit;
-    return new MovieListDTO(movieRepository.findMovieByTitleContainingIgnoreCase(title).stream()
+    List<Movie> movieList = movieRepository.findMovieByTitleContainingIgnoreCase(title);
+    if (movieList.isEmpty()) {
+      throw new MovieNotFoundException();
+    }
+    return convertListToDTO(movieList, limit);
+  }
+
+  @Override
+  public MovieListDTO convertListToDTO(List<Movie> movieList, Integer limit) {
+    return new MovieListDTO(movieList.stream()
             .map(MovieDTO::new)
             .sorted((m1, m2) -> m2.getAverageRating() == null ? -1 : m2.getAverageRating().compareTo(m1.getAverageRating()))
             .limit(limit)
             .collect(Collectors.toList()));
-  }
-
-  @Override
-  public Movie getMovieByTitle(String title) {
-    return movieRepository.findMovieByTitle(title).orElseThrow(MovieNotFoundException::new);
   }
 
   @Override

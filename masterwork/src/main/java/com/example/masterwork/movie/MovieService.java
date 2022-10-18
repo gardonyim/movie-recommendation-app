@@ -5,6 +5,8 @@ import com.example.masterwork.movie.models.MovieDetailsDTO;
 import com.example.masterwork.movie.models.MovieListDTO;
 import com.example.masterwork.movie.models.MovieReqDTO;
 
+import java.util.List;
+
 public interface MovieService {
 
   MovieListDTO fetchTopRated(Integer limit);
@@ -15,7 +17,7 @@ public interface MovieService {
 
   MovieListDTO fetchMovieByTitle(String title, Integer limit);
 
-  Movie getMovieByTitle(String title);
+  MovieListDTO convertListToDTO(List<Movie> list, Integer limit);
 
   MovieDetailsDTO convertToDetailsDTO(Movie movie);
 
